@@ -27,15 +27,19 @@ public class Ventana extends JFrame {
 	private JLabel imagenCandidato;
 	
 	// Atributos de PANEL CANDIDATOS ---VA CAMBIANDO SEGÚN EL BOTÓN---
-	private JPanel panelListarCandidato;
+	private JPanel panelListarCandidato, panelInsertarCandidato;
 	private JScrollPane barraCandidatos;
 	private JTable tablaCandidatos;
+	private JTextField JTFinsertNomCan,JTFinsertApellCan,JTFinsertEmailCan,JTFinsertTeleCan,
+		JTFinsertPerfilCan, JTFinsertFuenteCan, JTFinsertObscan;
+	private JLabel etiInsertarCan, eResulInsertCan;
+	private JButton BinsertFinalCandidato;
 	
 	//Colores
 	Color colorBlanco = Color.white;
 	Color colorGris = Color.gray;
 	Color colorNegro = Color.black;
-	Color verdeAcens = new Color(50, 205, 50);
+	Color colorVerdeAcens = new Color(50, 205, 50);
 
 	//CONSTRUCTOR
 	public Ventana() {
@@ -82,7 +86,7 @@ public class Ventana extends JFrame {
 		botonInicioCandidato.setBounds(40,40,160,80);
 		botonInicioCandidato.setBackground(colorNegro);
 		botonInicioCandidato.setBorder(null);
-		botonInicioCandidato.setForeground(verdeAcens);
+		botonInicioCandidato.setForeground(colorVerdeAcens);
 		botonInicioCandidato.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
 		inicioFijo.add(botonInicioCandidato);
 		
@@ -90,7 +94,7 @@ public class Ventana extends JFrame {
 		botonInicioProceso.setBounds(40,150,160,80);
 		botonInicioProceso.setBackground(colorNegro);
 		botonInicioProceso.setBorder(null);
-		botonInicioProceso.setForeground(verdeAcens);
+		botonInicioProceso.setForeground(colorVerdeAcens);
 		botonInicioProceso.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
 		inicioFijo.add(botonInicioProceso);
 		
@@ -107,7 +111,7 @@ public class Ventana extends JFrame {
 		botonListarCandidato.setBounds(20,20,160,60);
 		botonListarCandidato.setBackground(colorNegro);
 		botonListarCandidato.setBorder(null);
-		botonListarCandidato.setForeground(verdeAcens);
+		botonListarCandidato.setForeground(colorVerdeAcens);
 		botonListarCandidato.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
 		botoneraPanelCandidato.add(botonListarCandidato);
 		
@@ -115,7 +119,7 @@ public class Ventana extends JFrame {
 		botonInsertarCandidato.setBounds(200,20,160,60);
 		botonInsertarCandidato.setBackground(colorNegro);
 		botonInsertarCandidato.setBorder(null);
-		botonInsertarCandidato.setForeground(verdeAcens);
+		botonInsertarCandidato.setForeground(colorVerdeAcens);
 		botonInsertarCandidato.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
 		botoneraPanelCandidato.add(botonInsertarCandidato);
 		
@@ -123,7 +127,7 @@ public class Ventana extends JFrame {
 		botonConsultarCandidato.setBounds(380,20,160,60);
 		botonConsultarCandidato.setBackground(colorNegro);
 		botonConsultarCandidato.setBorder(null);
-		botonConsultarCandidato.setForeground(verdeAcens);
+		botonConsultarCandidato.setForeground(colorVerdeAcens);
 		botonConsultarCandidato.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
 		botoneraPanelCandidato.add(botonConsultarCandidato);
 		
@@ -131,7 +135,7 @@ public class Ventana extends JFrame {
 		botonUpdateCandidato.setBounds(560,20,160,60);
 		botonUpdateCandidato.setBackground(colorNegro);
 		botonUpdateCandidato.setBorder(null);
-		botonUpdateCandidato.setForeground(verdeAcens);
+		botonUpdateCandidato.setForeground(colorVerdeAcens);
 		botonUpdateCandidato.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
 		botoneraPanelCandidato.add(botonUpdateCandidato);
 		
@@ -139,7 +143,7 @@ public class Ventana extends JFrame {
 		botonDeleteCandidato.setBounds(740,20,160,60);
 		botonDeleteCandidato.setBackground(colorNegro);
 		botonDeleteCandidato.setBorder(null);
-		botonDeleteCandidato.setForeground(verdeAcens);
+		botonDeleteCandidato.setForeground(colorVerdeAcens);
 		botonDeleteCandidato.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
 		botoneraPanelCandidato.add(botonDeleteCandidato);
 		
@@ -153,7 +157,7 @@ public class Ventana extends JFrame {
 		//PANEL LISTAR CANDIDATOS
 		
 		panelListarCandidato = new JPanel();
-		panelListarCandidato.setBackground(Color.magenta);
+		panelListarCandidato.setBackground(Color.LIGHT_GRAY);
 		panelListarCandidato.setBounds(260, 110, 925, 550);
 		panelListarCandidato.setLayout(null);
 		add(panelListarCandidato);
@@ -162,21 +166,136 @@ public class Ventana extends JFrame {
 		//Creación de la tabla Candidatos
 		
 		barraCandidatos = new JScrollPane();
-		barraCandidatos.setBounds(20, 20, 850, 190);
+		barraCandidatos.setBounds(20, 20, 850, 300);
 		panelListarCandidato.add(barraCandidatos);
 		
 		String titulosEmpleados[] = {"IdCandidato","Nombre","Apellidos","e-mail", "Telefono","Perfil",
 				"Fuente","Observaciones"};
 		String infoCandidatos[][] = AccesoDB.obtenerMatrizCandidatos();
 		
+		
 		TableModel model = new DefaultTableModel(infoCandidatos, titulosEmpleados);
-		tablaCandidatos = new JTable();
-		tablaCandidatos.setModel(model);
-		((AbstractTableModel) model).fireTableDataChanged();
+		tablaCandidatos = new JTable(model);
+		  
+		tablaCandidatos.setModel(model); 
+		((AbstractTableModel)model).fireTableDataChanged();
+		model.addTableModelListener(getTablaCandidatos());
+		 
+		tablaCandidatos = new JTable(infoCandidatos,titulosEmpleados);
 
 		tablaCandidatos.getColumnModel().getColumn(7).setPreferredWidth(200);
 
 		barraCandidatos.setViewportView(tablaCandidatos);
+		
+		//PANEL INSERTAR CANDIDATOS
+		
+		panelInsertarCandidato = new JPanel();
+		panelInsertarCandidato.setBackground(Color.lightGray);
+		panelInsertarCandidato.setBounds(260, 110, 925, 550);
+		panelInsertarCandidato.setLayout(null);
+		add(panelInsertarCandidato);
+		panelInsertarCandidato.setVisible(false);
+		
+		etiInsertarCan = new JLabel("Insertar Candidato");
+		etiInsertarCan.setBounds(20, 0, 900, 60);
+		etiInsertarCan.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		etiInsertarCan.setForeground(Color.DARK_GRAY);//Color del texto
+		etiInsertarCan.setHorizontalAlignment(JLabel.CENTER);
+		etiInsertarCan.setVerticalAlignment(JLabel.CENTER);
+		panelInsertarCandidato.add(etiInsertarCan);//Anadimos
+		
+		JTFinsertNomCan = new JTextField();//Creamos el componente
+		TextPrompt placeholder = new TextPrompt("Nombre candidato", JTFinsertNomCan);
+	    placeholder.changeAlpha(0.75f);
+	    placeholder.changeStyle(Font.ITALIC);
+	    JTFinsertNomCan.setBounds(50,90,250,30);//Posicionamos		
+	    JTFinsertNomCan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+	    JTFinsertNomCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JTFinsertNomCan.setBackground(colorBlanco); //Color de fondo
+	    JTFinsertNomCan.setForeground(colorGris);//Color del texto
+	    panelInsertarCandidato.add(JTFinsertNomCan);//Anadimos
+	    
+	    JTFinsertApellCan = new JTextField();//Creamos el componente
+		TextPrompt placeholderapel = new TextPrompt("Apellidos candidato", JTFinsertApellCan);
+		placeholderapel.changeAlpha(0.75f);
+		placeholderapel.changeStyle(Font.ITALIC);
+	    JTFinsertApellCan.setBounds(330,90,350,30);//Posicionamos		
+	    JTFinsertApellCan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+	    JTFinsertApellCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JTFinsertApellCan.setBackground(colorBlanco); //Color de fondo
+	    JTFinsertApellCan.setForeground(colorGris);//Color del texto
+	    panelInsertarCandidato.add(JTFinsertApellCan);//Anadimos
+	    
+	    JTFinsertTeleCan = new JTextField();//Creamos el componente
+		TextPrompt placeholdertel = new TextPrompt("Telefono", JTFinsertTeleCan);
+		placeholdertel.changeAlpha(0.75f);
+		placeholdertel.changeStyle(Font.ITALIC);
+		JTFinsertTeleCan.setBounds(710,90,150,30);//Posicionamos		
+		JTFinsertTeleCan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertTeleCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertTeleCan.setBackground(colorBlanco); //Color de fondo
+		JTFinsertTeleCan.setForeground(colorGris);//Color del texto
+	    panelInsertarCandidato.add(JTFinsertTeleCan);//Anadimos
+	    
+	    JTFinsertEmailCan = new JTextField();//Creamos el componente
+		TextPrompt placeholdertemailCan = new TextPrompt("Email", JTFinsertEmailCan);
+		placeholdertemailCan.changeAlpha(0.75f);
+		placeholdertemailCan.changeStyle(Font.ITALIC);
+		JTFinsertEmailCan.setBounds(50,150,350,30);//Posicionamos		
+		JTFinsertEmailCan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertEmailCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertEmailCan.setBackground(colorBlanco); //Color de fondo
+		JTFinsertEmailCan.setForeground(colorGris);//Color del texto
+	    panelInsertarCandidato.add(JTFinsertEmailCan);//Anadimos
+	    
+	    JTFinsertFuenteCan = new JTextField();//Creamos el componente
+		TextPrompt placeholdertfuente = new TextPrompt("Fuente", JTFinsertFuenteCan);
+		placeholdertfuente.changeAlpha(0.75f);
+		placeholdertfuente.changeStyle(Font.ITALIC);
+		JTFinsertFuenteCan.setBounds(430,150,200,30);//Posicionamos		
+		JTFinsertFuenteCan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertFuenteCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertFuenteCan.setBackground(colorBlanco); //Color de fondo
+		JTFinsertFuenteCan.setForeground(colorGris);//Color del texto
+	    panelInsertarCandidato.add(JTFinsertFuenteCan);//Anadimos
+	    
+	    JTFinsertPerfilCan = new JTextField();//Creamos el componente
+		TextPrompt placeholdertperfil = new TextPrompt("Perfil", JTFinsertPerfilCan);
+		placeholdertperfil.changeAlpha(0.75f);
+		placeholdertperfil.changeStyle(Font.ITALIC);
+		JTFinsertPerfilCan.setBounds(660,150,200,30);//Posicionamos		
+		JTFinsertPerfilCan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertPerfilCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertPerfilCan.setBackground(colorBlanco); //Color de fondo
+		JTFinsertPerfilCan.setForeground(colorGris);//Color del texto
+	    panelInsertarCandidato.add(JTFinsertPerfilCan);//Anadimos
+	    
+	    JTFinsertObscan = new JTextField();//Creamos el componente
+		TextPrompt placeholderobs = new TextPrompt("Observaciones", JTFinsertObscan);
+		placeholderobs.changeAlpha(0.75f);
+		placeholderobs.changeStyle(Font.ITALIC);
+		JTFinsertObscan.setBounds(50,210,810,30);//Posicionamos		
+		JTFinsertObscan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertObscan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertObscan.setBackground(colorBlanco); //Color de fondo
+		JTFinsertObscan.setForeground(colorGris);//Color del texto
+	    panelInsertarCandidato.add(JTFinsertObscan);//Anadimos
+	    
+	    BinsertFinalCandidato = new JButton("INSERTAR");
+	    BinsertFinalCandidato.setBounds(50,270,110,50);
+	    BinsertFinalCandidato.setBackground(colorVerdeAcens);
+	    BinsertFinalCandidato.setBorder(null);
+	    BinsertFinalCandidato.setForeground(colorNegro);
+	    BinsertFinalCandidato.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    panelInsertarCandidato.add(BinsertFinalCandidato);
+	    
+	    eResulInsertCan = new JLabel();
+	    eResulInsertCan.setBounds(190, 270, 700, 50);
+	    eResulInsertCan.setFont(new Font("Segoe UI",Font.BOLD,20));//Damos formato al contenido
+	    eResulInsertCan.setForeground(Color.DARK_GRAY);//Color del texto
+	    eResulInsertCan.setVerticalAlignment(JLabel.CENTER);
+		panelInsertarCandidato.add(eResulInsertCan);//Anadimos
+		
 	}
 	
 	//METODO PARA PONER A LA ESCUCHA LOS EVENTOS	
@@ -186,6 +305,8 @@ public class Ventana extends JFrame {
 			botonInicioCandidato.addMouseListener(manejador);
 			botonListarCandidato.addMouseListener(manejador);
 			botonConsultarCandidato.addMouseListener(manejador);
+			botonInsertarCandidato.addMouseListener(manejador);
+			BinsertFinalCandidato.addMouseListener(manejador);
 
 		}
 
@@ -299,5 +420,85 @@ public class Ventana extends JFrame {
 
 		public void setTablaCandidatos(JTable tablaCandidatos) {
 			this.tablaCandidatos = tablaCandidatos;
+		}
+
+		public JPanel getPanelInsertarCandidato() {
+			return panelInsertarCandidato;
+		}
+
+		public void setPanelInsertarCandidato(JPanel panelInsertarCandidato) {
+			this.panelInsertarCandidato = panelInsertarCandidato;
+		}
+
+		public JTextField getJTFinsertNomCan() {
+			return JTFinsertNomCan;
+		}
+
+		public void setJTFinsertNomCan(JTextField jTFinsertNomCan) {
+			JTFinsertNomCan = jTFinsertNomCan;
+		}
+
+		public JTextField getJTFinsertApellCan() {
+			return JTFinsertApellCan;
+		}
+
+		public void setJTFinsertApellCan(JTextField jTFinsertApellCan) {
+			JTFinsertApellCan = jTFinsertApellCan;
+		}
+
+		public JTextField getJTFinsertEmailCan() {
+			return JTFinsertEmailCan;
+		}
+
+		public void setJTFinsertEmailCan(JTextField jTFinsertEmailCan) {
+			JTFinsertEmailCan = jTFinsertEmailCan;
+		}
+
+		public JTextField getJTFinsertTeleCan() {
+			return JTFinsertTeleCan;
+		}
+
+		public void setJTFinsertTeleCan(JTextField jTFinsertTeleCan) {
+			JTFinsertTeleCan = jTFinsertTeleCan;
+		}
+
+		public JTextField getJTFinsertPerfilCan() {
+			return JTFinsertPerfilCan;
+		}
+
+		public void setJTFinsertPerfilCan(JTextField jTFinsertPerfilCan) {
+			JTFinsertPerfilCan = jTFinsertPerfilCan;
+		}
+
+		public JTextField getJTFinsertFuenteCan() {
+			return JTFinsertFuenteCan;
+		}
+
+		public void setJTFinsertFuenteCan(JTextField fTJinsertFuenteCan) {
+			JTFinsertFuenteCan = fTJinsertFuenteCan;
+		}
+
+		public JTextField getJTFinsertObscan() {
+			return JTFinsertObscan;
+		}
+
+		public void setJTFinsertObscan(JTextField jTFinsertObscan) {
+			JTFinsertObscan = jTFinsertObscan;
+		}
+
+		public JButton getBinsertFinalCandidato() {
+			return BinsertFinalCandidato;
+		}
+
+		public void setBinsertFinalCandidato(JButton binsertFinalCandidato) {
+			BinsertFinalCandidato = binsertFinalCandidato;
+		}
+
+		public JLabel geteResulInsertCan() {
+			return eResulInsertCan;
+		}
+
+		public void seteResulInsertCan(JLabel eResulInsertCan) {
+			this.eResulInsertCan = eResulInsertCan;
 		}
 }

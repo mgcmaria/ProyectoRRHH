@@ -10,7 +10,6 @@ import vista.Ventana;
 
 public class Eventos implements ActionListener, MouseListener {
 	
-	@SuppressWarnings("unused")
 	private Ventana ventana;
 	Connection conexion;
 	
@@ -20,8 +19,7 @@ public class Eventos implements ActionListener, MouseListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 		
 		
 	}
@@ -44,6 +42,7 @@ public class Eventos implements ActionListener, MouseListener {
 			//Ocultamos el resto
 			ventana.getImagenInicio().setVisible(false);
 			ventana.getPanelListarCandidato().setVisible(false);
+			ventana.getPanelInsertarCandidato().setVisible(false);
 		}
 		
 		else if(e.getSource() == ventana.getBotonListarCandidato()) {
@@ -53,7 +52,31 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			//Ocultamos el resto
 			ventana.getImagenCandidato().setVisible(false);
+			ventana.getPanelInsertarCandidato().setVisible(false);
 			
+		}
+		
+		else if(e.getSource() == ventana.getBotonInsertarCandidato()) {
+			
+			//Mostramos Panel de insertar Candidatos
+			ventana.getPanelInsertarCandidato().setVisible(true);
+			
+			//Ocultamos el resto
+			ventana.getImagenCandidato().setVisible(false);
+			ventana.getPanelListarCandidato().setVisible(false);
+			ventana.getImagenInicio().setVisible(false);
+			ventana.getImagenCandidato().setVisible(false);
+		}
+		
+		else if(e.getSource() == ventana.getBinsertFinalCandidato()) {
+			
+			if(ventana.getJTFinsertNomCan().getText().isEmpty() || ventana.getJTFinsertApellCan().getText().isEmpty() ||
+					ventana.getJTFinsertEmailCan().getText().isEmpty() || ventana.getJTFinsertTeleCan().getText().isEmpty() ||
+					ventana.getJTFinsertPerfilCan().getText().isEmpty() || ventana.getJTFinsertObscan().getText().isEmpty() ||
+					ventana.getJTFinsertFuenteCan().getText().isEmpty())	
+			{
+				ventana.geteResulInsertCan().setText("Inserte todos los campos");
+			}
 		}
 		
 	}

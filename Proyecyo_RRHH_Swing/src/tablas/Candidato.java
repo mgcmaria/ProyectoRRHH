@@ -3,8 +3,7 @@ package tablas;
 public class Candidato {
 	
 	private int idCandidato, telefono;
-	private String nombre, apellidos, email, fuente, perfil, observaciones;
-	
+	private String nombre, apellidos, email, fuente, perfil, observaciones;	
 	
 	public Candidato(int idCandidato, int telefono, String nombre, String apellidos, String email, String fuente,
 			String perfil, String observaciones) {
@@ -19,18 +18,20 @@ public class Candidato {
 		this.observaciones = observaciones;
 	}
 	
-	//Sobrecarga del constructor
-	public Candidato(int telefono, String nombre, String apellidos, String email, String fuente,
-			String perfil, String observaciones) {
-		super();
+	
+	//Sobrecarga del constructor 
+	public Candidato(int telefono, String nombre, String apellidos, String email, 
+			String fuente, String perfil, String observaciones) {
+		super(); 
 		this.telefono = telefono;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
-		this.email = email;
+		this.email = email; 
 		this.fuente = fuente;
-		this.perfil = perfil;
+		this.perfil = perfil; 
 		this.observaciones = observaciones;
 	}
+	 
 
 	public int getIdCandidato() {
 		return idCandidato;

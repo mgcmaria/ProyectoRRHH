@@ -12,6 +12,8 @@ import tablas.Candidato;
 public class AccesoDB {
 	
 public static Connection conexion() {
+	
+		Connection con = null;
 
 		// Paso 1: Cargar el driver		
 
@@ -19,9 +21,7 @@ public static Connection conexion() {
 			Class.forName("oracle.jdbc.OracleDriver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}		
-
-		Connection con = null;
+		}
 
 		// Paso 2: Establecer conexion con la base de datos
 		
@@ -33,9 +33,9 @@ public static Connection conexion() {
 			con = DriverManager.getConnection(cadenaConexion, user, pass);
 		} catch (SQLException e) {
 			e.getMessage();
-			return null;
+			//return null;
 		}		
-		return  con;
+		return con;
 	}
 
 	public static void cerrarConexion(Connection conexion) {
@@ -50,9 +50,9 @@ public static Connection conexion() {
 
 	public static String[][] obtenerMatrizCandidatos() {
 		
-		Connection conexion = AccesoDB.conexion();	
+		Connection conexion = conexion();	
 
-		ArrayList<Candidato> listaCandidatos = AccesoDB.datosCandidatos(conexion);		
+		ArrayList<Candidato> listaCandidatos = datosCandidatos(conexion);		
 
 		String matrizInfo[][] = new String[listaCandidatos.size()][8];		
 
@@ -73,7 +73,7 @@ public static Connection conexion() {
 
 	private static ArrayList<Candidato> datosCandidatos(Connection conexion) {
 		
-		ArrayList<Candidato> lista_empleados = new ArrayList<Candidato>();		
+		ArrayList<Candidato> lista_candidatos = new ArrayList<Candidato>();		
 
 		Candidato c;		
 
@@ -98,13 +98,16 @@ public static Connection conexion() {
 
 				c = new Candidato(idCan,telefono,apellidos,email,nombre,fuente,perfil,obs);			
 
-				lista_empleados.add(c);
+				lista_candidatos.add(c);
+				System.out.println(rs.getInt("IDCANDIDATO"));
+				System.out.println(lista_candidatos.size());
 
 			}
 		} catch (SQLException e) {
 			e.getMessage();
 		}
-		return lista_empleados;
+		return lista_candidatos;
+		
 	}
 
 }
