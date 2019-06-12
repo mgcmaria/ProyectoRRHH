@@ -1,7 +1,11 @@
 package controlador;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,7 +37,7 @@ public static Connection conexion() {
 			con = DriverManager.getConnection(cadenaConexion, user, pass);
 		} catch (SQLException e) {
 			e.getMessage();
-			//return null;
+			return null;
 		}		
 		return con;
 	}
@@ -51,8 +55,8 @@ public static Connection conexion() {
 	public static String[][] obtenerMatrizCandidatos() {
 		
 		Connection conexion = conexion();	
-
-		ArrayList<Candidato> listaCandidatos = datosCandidatos(conexion);		
+		
+		ArrayList<Candidato> listaCandidatos = AccesoDB.datosCandidatos(conexion);
 
 		String matrizInfo[][] = new String[listaCandidatos.size()][8];		
 
@@ -71,43 +75,186 @@ public static Connection conexion() {
 		return matrizInfo;		
 	}
 
-	private static ArrayList<Candidato> datosCandidatos(Connection conexion) {
+	public static ArrayList<Candidato> datosCandidatos(Connection conexion) {	
 		
-		ArrayList<Candidato> lista_candidatos = new ArrayList<Candidato>();		
+		ArrayList<Candidato> lista_candidatos = new ArrayList<Candidato>();
+		
+		Candidato c;	
 
-		Candidato c;		
-
-		try {		
-
-			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
-
-			// Consulta SQL con resulset
-			ResultSet rs = sentencia.executeQuery("SELECT * FROM RS_CANDIDATOS");
+		try {
 			
-			// Mientras haya registros anadimos al ArrayList
-			while (rs.next()) { 			
+			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+			// Consulta SQL con resulset
+			ResultSet rs = sentencia.executeQuery("SELECT * FROM RS_CANDIDATOS order by idcandidato");		
 
-				int idCan = rs.getInt("IDCANDIDATO");				
+			// Mientras haya registros anadimos al ArrayList
+
+			while (rs.next()) {
+				
+				int idCan = rs.getInt("IDCANDIDATO");
 				String nombre = rs.getString("NOMBRE");
 				String apellidos = rs.getString("APELLIDOS");
 				String email = rs.getString("EMAIL");
 				String fuente = rs.getString("FUENTE");
 				String obs = rs.getString("OBSERVACIONES");
 				String perfil = rs.getString("PERFIL");
-				int telefono = rs.getInt("TELEFONO");				
+				int telefono = rs.getInt("TELEFONO");
 
-				c = new Candidato(idCan,telefono,apellidos,email,nombre,fuente,perfil,obs);			
+				c = new Candidato(idCan,nombre,apellidos,email,telefono,fuente,perfil,obs);	
 
 				lista_candidatos.add(c);
-				System.out.println(rs.getInt("IDCANDIDATO"));
-				System.out.println(lista_candidatos.size());
-
 			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getErrorCode());
+	
+		}
+		return lista_candidatos; 		
+		
+	}
+
+	public static int insertarCandidato(ArrayList<Candidato> nuevoCandidato, Connection conexion) {
+		// TODO Auto-generated method stub
+		
+		//Variable que vamos a retornar para comprobar que todo ha salido OK
+		int afectados = 0;
+		
+		try {
+			//Almacenamos en un String la Sentencia SQL
+			String sql = "INSERT INTO RS_CANDIDATOS (NOMBRE, APELLIDOS, EMAIL, TELEFONO, "
+					+ "FUENTE, PERFIL, OBSERVACIONES) VALUES (?, ?, ?, ?, ?, ?, ?)";			
+			
+			String nombre = null;
+			String apellidos = null;
+			String email = null;
+			int telefono = 0;
+			String fuente = null;
+			String perfil = null;	
+			String obs = null ;
+
+			for (Candidato can : nuevoCandidato) {
+				
+				nombre = can.getNombre();
+				apellidos = can.getApellidos();
+				email = can.getEmail();
+				telefono = can.getTelefono();				
+				fuente = can.getFuente();
+				perfil = can.getPerfil();
+				obs = can.getObservaciones();
+			}				
+
+			//Con PreparedStatement recogemos los valores del Array que hemos recogido de la ventana
+
+			PreparedStatement sentencia;
+			sentencia = conexion.prepareStatement(sql);
+
+			sentencia.setString(1, nombre);
+			sentencia.setString(2, apellidos);
+			sentencia.setString(3, email);
+			sentencia.setInt(4, telefono);
+			sentencia.setString(5, fuente);
+			sentencia.setString(6, perfil);		
+			sentencia.setString(7, obs);
+
+			afectados = sentencia.executeUpdate(); //Ejecutamos la insercion
+
 		} catch (SQLException e) {
 			e.getMessage();
 		}
-		return lista_candidatos;
+		return afectados;	
+	}
+
+	public static Candidato consultarCandidato(String columna_consul_can, String valor_consul_can,
+			Connection conexion) {
 		
+		Candidato c = null;		
+		Statement sentencia;
+		
+		try {
+			sentencia = conexion.createStatement();
+			ResultSet rs = sentencia.executeQuery("SELECT * FROM RS_CANDIDATOS WHERE"
+					+ columna_consul_can+ "LIKE '%" + valor_consul_can +"%'"); //Consulta SQL
+			
+			while (rs.next()) {
+		
+				System.out.println("Campos actuales del candidato"+ valor_consul_can);	
+				int idCandidato = rs.getInt("IDCANDIDATO");
+				String nombre = rs.getString("NOMBRE");
+				String apellidos= rs.getString("APELLIDOS");
+				String email = rs.getString("EMAIL");
+				int telefono = rs.getInt("TELEFONO");
+				String fuente = rs.getString("FUENTE");				
+				String perfil = rs.getString("PERFIL");
+				String observaciones = rs.getString("OBSERVACIONES");
+				
+				c = new Candidato(idCandidato, email, nombre, apellidos, telefono, fuente, perfil, observaciones);
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return c;
+	}
+
+	public static Boolean exportarFicheroEmpleados() {
+		
+		File f = new File("candidatos.csv");		
+
+		Connection conexion = AccesoDB.conexion();		
+
+		ArrayList<Candidato> lista_candidatos = datosCandidatos(conexion);		
+
+		try {
+
+			FileWriter ficheroEmp = new FileWriter(f);			
+
+			//Escribimos los títulos de los campos de las columnas
+			ficheroEmp.write("IDCandidato,Nombre,Apellidos,Email,Telefono,Perfil,Fuente,Observaciones");
+			ficheroEmp.write("\n"); // Salto línea			
+
+			for (Candidato c : lista_candidatos) {		
+
+				ficheroEmp.write(Integer.toString(c.getIdCandidato()));
+				ficheroEmp.write(",");
+				ficheroEmp.write(c.getNombre());
+				ficheroEmp.write(",");
+				ficheroEmp.write(c.getApellidos());
+				ficheroEmp.write(",");
+				ficheroEmp.write(c.getEmail());
+				ficheroEmp.write(",");
+				ficheroEmp.write(Integer.toString(c.getTelefono()));
+				ficheroEmp.write(",");
+				ficheroEmp.write(c.getPerfil());
+				ficheroEmp.write(",");
+				ficheroEmp.write(c.getFuente());
+				ficheroEmp.write(",");
+				ficheroEmp.write(c.getObservaciones());
+				ficheroEmp.write("\n");
+			}
+			ficheroEmp.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	public static int actualizarCandidato(String idCandidato, String campo, String nuevoValor, Connection conexion) {
+
+		int afectados = 0;		
+
+		// Almacenamos en un String la Sentencia SQL
+
+		String sql = "UPDATE RS_CANDIDATOS SET " + campo +"= '"+ nuevoValor +"' WHERE IDCANDIDATO LIKE '%" + Integer.parseInt(idCandidato) + "%'";		
+		
+		try {
+			PreparedStatement sentencia = conexion.prepareStatement(sql);
+			afectados = sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return afectados;
 	}
 
 }

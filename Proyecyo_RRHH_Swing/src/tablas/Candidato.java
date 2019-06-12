@@ -5,7 +5,7 @@ public class Candidato {
 	private int idCandidato, telefono;
 	private String nombre, apellidos, email, fuente, perfil, observaciones;	
 	
-	public Candidato(int idCandidato, int telefono, String nombre, String apellidos, String email, String fuente,
+	public Candidato(int idCandidato, String nombre, String apellidos, String email, int telefono,String fuente,
 			String perfil, String observaciones) {
 		super();
 		this.idCandidato = idCandidato;
@@ -20,8 +20,8 @@ public class Candidato {
 	
 	
 	//Sobrecarga del constructor 
-	public Candidato(int telefono, String nombre, String apellidos, String email, 
-			String fuente, String perfil, String observaciones) {
+	public Candidato(String nombre, String apellidos, String email, int telefono, String fuente, 
+			String perfil, String observaciones) {
 		super(); 
 		this.telefono = telefono;
 		this.nombre = nombre;
@@ -31,7 +31,6 @@ public class Candidato {
 		this.perfil = perfil; 
 		this.observaciones = observaciones;
 	}
-	 
 
 	public int getIdCandidato() {
 		return idCandidato;
