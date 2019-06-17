@@ -29,19 +29,20 @@ public class Ventana extends JFrame {
 	
 	// Atributos de PANEL CANDIDATOS ---VA CAMBIANDO SEGÚN EL BOTÓN---
 	private JPanel panelListarCandidato, panelInsertarCandidato, panelConsultarCandidato, subpanelConsulCan,
-	panelUpdateCan;
+	panelUpdateCan, panelEliminarCan;
 	private JScrollPane barraCandidatos;
 	private JTable tablaCandidatos;
 	private JTextField JTFinsertNomCan,JTFinsertApellCan,JTFinsertEmailCan,JTFinsertTeleCan,
 		JTFinsertPerfilCan, JTFinsertFuenteCan, JTFinsertObscan, JTFResulComboConsulCan, JTFidUpdateCan,
-		JTFUpdateNewdataCan;
+		JTFUpdateNewdataCan, JTFidEliminarCan;
 	private JLabel etiInsertarCan, eResulInsertCan, etiConsultarCandidato, etiComboConsulCan, eResulConsulCan,
 		EresulConsultaIdCan, EresulConsultaNombreCan, EresulConsultaApelCan, EresulConsultaEmailCan, EresulConsultaTelCan,
 		EresulConsultaFuenteCan, EresulConsultaPerfilCan, EresulConsultaObsCan, EtituloConsultaIdCan, EtituloConsultaNombreCan, 
 		EtituloConsultaApelCan, EtituloConsultaEmailCan, EtituloConsultaTelCan, EtituloConsultaFuenteCan, EtituloConsultaPerfilCan, 
 		EtituloConsultaObsCan, EResulExportCan, etiUpdateCandidato, etiConsulUpCan, etiComboUpdateCan, etiUpNewDataCandidato,
-		EresulVerUpdateCan, EpreguntaUpdateCan,EresulUpdateFinalCan;
-	private JButton BinsertFinalCandidato, BconsulFinalCandidato, BExportCandidato, BVerificarUpdateCan,BUpdateFinalCandidato;
+		EresulVerUpdateCan, EpreguntaUpdateCan,EresulUpdateFinalCan, etiEliminarCan, etiConsulEliminarCan, etiResulEliCan;
+	private JButton BinsertFinalCandidato, BconsulFinalCandidato, BExportCandidato, BVerificarUpdateCan,BUpdateFinalCandidato, 
+		BVerificarDeleteCan, BDeleteFinalCan;
 	private JComboBox <String> comboConsultaCandidato, comboUpdateCandidato;
 	
 	//Colores
@@ -114,6 +115,67 @@ public class Ventana extends JFrame {
 		panelInsertarCandidato();		
 		panelConsultarCandidato();		
 		panelUpdateCandidato();
+		panelEliminarCandidato();
+		
+	}
+
+	private void panelEliminarCandidato() {
+	
+		//PANEL ELIMINAR CANDIDATO
+		panelEliminarCan = new JPanel();
+		panelEliminarCan.setBackground(Color.lightGray);
+		panelEliminarCan.setBounds(260, 110, 925, 550);
+		panelEliminarCan.setLayout(null);
+		add(panelEliminarCan);
+		panelEliminarCan.setVisible(false);
+		
+		etiEliminarCan = new JLabel("Eliminar Candidato");
+		etiEliminarCan.setBounds(20, 0, 900, 60);
+		etiEliminarCan.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		etiEliminarCan.setForeground(Color.DARK_GRAY);//Color del texto
+		etiEliminarCan.setHorizontalAlignment(JLabel.CENTER);
+		etiEliminarCan.setVerticalAlignment(JLabel.CENTER);
+		panelEliminarCan.add(etiEliminarCan);//Anadimos
+		
+		etiConsulEliminarCan = new JLabel("Introduce el ID del candidato a eliminar");
+		etiConsulEliminarCan.setBounds(20, 70, 370, 30);
+		etiConsulEliminarCan.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
+		etiConsulEliminarCan.setForeground(Color.DARK_GRAY);//Color del texto
+		panelEliminarCan.add(etiConsulEliminarCan);//Anadimos
+		
+		JTFidEliminarCan = new JTextField();//Creamos el componente
+		TextPrompt placeholderidUpCan = new TextPrompt("Id Candidato", JTFidEliminarCan);
+		placeholderidUpCan.changeAlpha(0.75f);
+		placeholderidUpCan.changeStyle(Font.ITALIC);
+		JTFidEliminarCan.setBounds(20,110,370,30);//Posicionamos		
+		JTFidEliminarCan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); 
+		JTFidEliminarCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFidEliminarCan.setBackground(colorBlanco); //Color de fondo
+		JTFidEliminarCan.setForeground(colorGris);//Color del texto
+		panelEliminarCan.add(JTFidEliminarCan);//Anadimos	
+		
+		BVerificarDeleteCan = new JButton("CONSULTAR");
+		BVerificarDeleteCan.setBounds(20,170,110,50);
+		BVerificarDeleteCan.setBackground(colorVerdeAcens);
+		BVerificarDeleteCan.setBorder(null);
+		BVerificarDeleteCan.setForeground(colorNegro);
+		BVerificarDeleteCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		panelEliminarCan.add(BVerificarDeleteCan);
+		
+		etiResulEliCan = new JLabel();
+		etiResulEliCan.setBounds(20, 240, 850, 30);
+		etiResulEliCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		etiResulEliCan.setForeground(Color.DARK_GRAY);//Color del texto 
+		panelEliminarCan.add(etiResulEliCan);//Anadimos	
+		
+		BDeleteFinalCan = new JButton("ELIMINAR");
+		BDeleteFinalCan.setBounds(20,290,110,50);
+		BDeleteFinalCan.setBackground(colorVerdeAcens);
+		BDeleteFinalCan.setBorder(null);
+		BDeleteFinalCan.setForeground(colorNegro);
+		BDeleteFinalCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		panelEliminarCan.add(BDeleteFinalCan);
+		BDeleteFinalCan.setVisible(false);
 		
 	}
 
@@ -198,9 +260,9 @@ public class Ventana extends JFrame {
 		panelUpdateCan.add(BVerificarUpdateCan);
 		
 		EresulVerUpdateCan = new JLabel();
-		EresulVerUpdateCan.setBounds(20, 240, 700, 30);
-		EresulVerUpdateCan.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
-		EresulVerUpdateCan.setForeground(Color.DARK_GRAY);//Color del texto
+		EresulVerUpdateCan.setBounds(20, 240, 850, 30);
+		EresulVerUpdateCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		EresulVerUpdateCan.setForeground(Color.DARK_GRAY);//Color del texto 
 		panelUpdateCan.add(EresulVerUpdateCan);//Anadimos
 		
 		EpreguntaUpdateCan = new JLabel("¿Deseas continuar?");
@@ -638,6 +700,9 @@ public class Ventana extends JFrame {
 		botonUpdateCandidato.addMouseListener(manejador);
 		BVerificarUpdateCan.addMouseListener(manejador);
 		BUpdateFinalCandidato.addMouseListener(manejador);
+		botonDeleteCandidato.addMouseListener(manejador);
+		BVerificarDeleteCan.addMouseListener(manejador);
+		BDeleteFinalCan.addMouseListener(manejador);
 
 	}
 	
@@ -952,5 +1017,45 @@ public class Ventana extends JFrame {
 
 	public void setEresulUpdateFinalCan(JLabel eresulUpdateFinalCan) {
 		EresulUpdateFinalCan = eresulUpdateFinalCan;
+	}
+
+	public JPanel getPanelEliminarCan() {
+		return panelEliminarCan;
+	}
+
+	public JTextField getJTFidEliminarCan() {
+		return JTFidEliminarCan;
+	}
+
+	public void setPanelEliminarCan(JPanel panelEliminarCan) {
+		this.panelEliminarCan = panelEliminarCan;
+	}
+
+	public void setJTFidEliminarCan(JTextField jTFidEliminarCan) {
+		JTFidEliminarCan = jTFidEliminarCan;
+	}
+
+	public JButton getBVerificarDeleteCan() {
+		return BVerificarDeleteCan;
+	}
+
+	public void setBVerificarDeleteCan(JButton bVerificarDeleteCan) {
+		BVerificarDeleteCan = bVerificarDeleteCan;
+	}
+
+	public JLabel getEtiResulEliCan() {
+		return etiResulEliCan;
+	}
+
+	public void setEtiResulEliCan(JLabel etiResulEliCan) {
+		this.etiResulEliCan = etiResulEliCan;
+	}
+
+	public JButton getBDeleteFinalCan() {
+		return BDeleteFinalCan;
+	}
+
+	public void setBDeleteFinalCan(JButton bDeleteFinalCan) {
+		BDeleteFinalCan = bDeleteFinalCan;
 	}
 }

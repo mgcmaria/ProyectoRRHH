@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import tablas.Candidato;
 
 public class AccesoDB {
@@ -56,7 +59,7 @@ public static Connection conexion() {
 		
 		Connection conexion = conexion();	
 		
-		ArrayList<Candidato> listaCandidatos = AccesoDB.datosCandidatos(conexion);
+		ArrayList<Candidato> listaCandidatos = datosCandidatos(conexion);
 
 		String matrizInfo[][] = new String[listaCandidatos.size()][8];		
 
@@ -95,15 +98,22 @@ public static Connection conexion() {
 				String nombre = rs.getString("NOMBRE");
 				String apellidos = rs.getString("APELLIDOS");
 				String email = rs.getString("EMAIL");
-				String fuente = rs.getString("FUENTE");
-				String obs = rs.getString("OBSERVACIONES");
-				String perfil = rs.getString("PERFIL");
 				int telefono = rs.getInt("TELEFONO");
+				String fuente = rs.getString("FUENTE");
+				String perfil = rs.getString("PERFIL");
+				String obs = rs.getString("OBSERVACIONES");				
 
 				c = new Candidato(idCan,nombre,apellidos,email,telefono,fuente,perfil,obs);	
 
 				lista_candidatos.add(c);
 			}
+		} catch (NullPointerException e) {
+			e.getMessage();
+			//Mostramos Dialog
+			JOptionPane.showMessageDialog(new JFrame(), 
+					"No está conectado al sistema de Acens",
+					"Conexión",
+					JOptionPane.ERROR_MESSAGE);		
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -255,6 +265,32 @@ public static Connection conexion() {
 			e.printStackTrace();
 		}
 		return afectados;
+	}
+
+	public static int eliminarCandidato(String idCanEli, Connection conexion) {
+		// TODO Auto-generated method stub
+		
+		int idCandidato = Integer.parseInt(idCanEli);
+		int afectados = 0;
+		
+		try {
+			
+			//Sentencia SQL
+			String sql = "DELETE FROM rs_candidatos WHERE idcandidato=?";
+			
+			//Con PreparedStatement recogemos los valores introducidos			
+			PreparedStatement sentencia;
+			sentencia = conexion.prepareStatement(sql);
+			
+			sentencia.setInt(1, idCandidato);
+						
+			afectados = sentencia.executeUpdate(); //Ejecutamos el borrado
+			
+		} catch (SQLException e) {
+			e.getMessage();
+		}
+		return afectados;
+		
 	}
 
 }
