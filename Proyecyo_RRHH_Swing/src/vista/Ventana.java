@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import com.toedter.calendar.JDateChooser;
 
 import controlador.AccesoDB;
 import controlador.Eventos;
@@ -41,9 +42,25 @@ public class Ventana extends JFrame {
 		EtituloConsultaApelCan, EtituloConsultaEmailCan, EtituloConsultaTelCan, EtituloConsultaFuenteCan, EtituloConsultaPerfilCan, 
 		EtituloConsultaObsCan, EResulExportCan, etiUpdateCandidato, etiConsulUpCan, etiComboUpdateCan, etiUpNewDataCandidato,
 		EresulVerUpdateCan, EpreguntaUpdateCan,EresulUpdateFinalCan, etiEliminarCan, etiConsulEliminarCan, etiResulEliCan;
-	private JButton BinsertFinalCandidato, BconsulFinalCandidato, BExportCandidato, BVerificarUpdateCan,BUpdateFinalCandidato, 
+	private JButton BExportCandidato, BinsertFinalCandidato, BconsulFinalCandidato, BVerificarUpdateCan,BUpdateFinalCandidato, 
 		BVerificarDeleteCan, BDeleteFinalCan;
 	private JComboBox <String> comboConsultaCandidato, comboUpdateCandidato;
+	
+	// Atributos de PANEL PROCESOS BOTONERA ---FIJO---
+	private JPanel botoneraPanelProceso;
+	private JButton botonListarProceso,botonInsertarProceso,botonConsultarProceso, botonUpdateProceso,
+		botonDeleteProceso;
+	private JLabel imagenProceso;
+	
+	// Atributos de PANEL PROCESOS ---VA CAMBIANDO SEGÚN EL BOTÓN---
+	private JPanel panelListarProceso, panelInsertarProceso;
+	private JLabel etiInsertarPro, eFechaEntradaPro;
+	private JTextField JTFinsertNomPro, JTFinsertClientePro, JTFinsertResPro, JTFinsertDireccPro, JTFinsertDepPro,
+		JTFinsertEstadoPro, JTFinsertDesPro;
+	private JScrollPane barraProcesos;
+	private JTable tablaProcesos;
+	private JButton BExportProceso, BinsertFinalProceso;
+	private JDateChooser calendarEntradaPro;
 	
 	//Colores
 	Color colorBlanco = Color.white;
@@ -110,12 +127,237 @@ public class Ventana extends JFrame {
 		botonInicioProceso.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
 		inicioFijo.add(botonInicioProceso);
 		
+		//PANELES CANDIDATO
 		panelBotoneraCandidato();		
 		panelListarCandidatos();		
 		panelInsertarCandidato();		
 		panelConsultarCandidato();		
 		panelUpdateCandidato();
 		panelEliminarCandidato();
+		
+		//PANELES PROCESO
+		panelBotoneraProceso();
+		panelListarProcesos();	
+		panelInsertarProceso();
+		
+	}
+
+	private void panelInsertarProceso() {
+		// TODO Auto-generated method stub
+		
+		//PANEL INSERTAR PROCESOS
+		panelInsertarProceso = new JPanel();
+		panelInsertarProceso.setBackground(Color.lightGray);
+		panelInsertarProceso.setBounds(260, 110, 925, 550);
+		panelInsertarProceso.setLayout(null);
+		add(panelInsertarProceso);
+		panelInsertarProceso.setVisible(false);
+		
+		etiInsertarPro = new JLabel("Insertar Proceso");
+		etiInsertarPro.setBounds(20, 0, 900, 60);
+		etiInsertarPro.setFont(new Font("Segoe UI",Font.BOLD,40));//Damos formato al contenido
+		etiInsertarPro.setForeground(Color.DARK_GRAY);//Color del texto
+		etiInsertarPro.setHorizontalAlignment(JLabel.CENTER);
+		etiInsertarPro.setVerticalAlignment(JLabel.CENTER);
+		panelInsertarProceso.add(etiInsertarPro);//Anadimos
+		
+		JTFinsertNomPro = new JTextField();//Creamos el componente
+		TextPrompt placeholder_nomPro = new TextPrompt("Nombre proceso", JTFinsertNomPro);
+		placeholder_nomPro.changeAlpha(0.75f);
+		placeholder_nomPro.changeStyle(Font.ITALIC);
+		JTFinsertNomPro.setBounds(50,80,250,30);//Posicionamos		
+		JTFinsertNomPro.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertNomPro.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertNomPro.setBackground(colorBlanco); //Color de fondo
+		JTFinsertNomPro.setForeground(colorGris);//Color del texto
+		panelInsertarProceso.add(JTFinsertNomPro);//Anadimos
+	    
+	    JTFinsertClientePro = new JTextField();//Creamos el componente
+		TextPrompt placeholder_cliPro = new TextPrompt("Cliente que solicita proceso", JTFinsertClientePro);
+		placeholder_cliPro.changeAlpha(0.75f);
+		placeholder_cliPro.changeStyle(Font.ITALIC);
+		JTFinsertClientePro.setBounds(330,80,250,30);//Posicionamos		
+		JTFinsertClientePro.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertClientePro.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertClientePro.setBackground(colorBlanco); //Color de fondo
+		JTFinsertClientePro.setForeground(colorGris);//Color del texto
+		panelInsertarProceso.add(JTFinsertClientePro);//Anadimos
+	    
+	    JTFinsertResPro = new JTextField();//Creamos el componente
+		TextPrompt placeholder_resPro = new TextPrompt("Responsable Proceso", JTFinsertResPro);
+		placeholder_resPro.changeAlpha(0.75f);
+		placeholder_resPro.changeStyle(Font.ITALIC);
+		JTFinsertResPro.setBounds(610,80,250,30);//Posicionamos		
+		JTFinsertResPro.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertResPro.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertResPro.setBackground(colorBlanco); //Color de fondo
+		JTFinsertResPro.setForeground(colorGris);//Color del texto
+		panelInsertarProceso.add(JTFinsertResPro);//Anadimos
+	    
+	    JTFinsertDireccPro = new JTextField();//Creamos el componente
+		TextPrompt placeholder_dirPro = new TextPrompt("Dirección Responsable", JTFinsertDireccPro);
+		placeholder_dirPro.changeAlpha(0.75f);
+		placeholder_dirPro.changeStyle(Font.ITALIC);
+		JTFinsertDireccPro.setBounds(50,130,250,30);//Posicionamos		
+		JTFinsertDireccPro.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertDireccPro.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertDireccPro.setBackground(colorBlanco); //Color de fondo
+		JTFinsertDireccPro.setForeground(colorGris);//Color del texto
+		panelInsertarProceso.add(JTFinsertDireccPro);//Anadimos
+	    
+	    JTFinsertDepPro = new JTextField();//Creamos el componente
+		TextPrompt placeholdert_depPro = new TextPrompt("Departamento Proceso", JTFinsertDepPro);
+		placeholdert_depPro.changeAlpha(0.75f);
+		placeholdert_depPro.changeStyle(Font.ITALIC);
+		JTFinsertDepPro.setBounds(330,130,250,30);//Posicionamos		
+		JTFinsertDepPro.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertDepPro.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertDepPro.setBackground(colorBlanco); //Color de fondo
+		JTFinsertDepPro.setForeground(colorGris);//Color del texto
+		panelInsertarProceso.add(JTFinsertDepPro);//Anadimos
+		
+		JTFinsertEstadoPro = new JTextField();//Creamos el componente
+		TextPrompt placeholder_estPro = new TextPrompt("Estado Proceso", JTFinsertEstadoPro);
+		placeholder_estPro.changeAlpha(0.75f);
+		placeholder_estPro.changeStyle(Font.ITALIC);
+		JTFinsertEstadoPro.setBounds(610,130,250,30);//Posicionamos		
+		JTFinsertEstadoPro.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertEstadoPro.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertEstadoPro.setBackground(colorBlanco); //Color de fondo
+		JTFinsertEstadoPro.setForeground(colorGris);//Color del texto
+		panelInsertarProceso.add(JTFinsertEstadoPro);//Anadimos	 
+		
+		JTFinsertDesPro = new JTextField();//Creamos el componente
+		TextPrompt placeholder_desPro = new TextPrompt("Descripción Trabajo", JTFinsertDesPro);
+		placeholder_desPro.changeAlpha(0.75f);
+		placeholder_desPro.changeStyle(Font.ITALIC);
+		JTFinsertDesPro.setBounds(50,180,820,30);//Posicionamos		
+		JTFinsertDesPro.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFinsertDesPro.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFinsertDesPro.setBackground(colorBlanco); //Color de fondo
+		JTFinsertDesPro.setForeground(colorGris);//Color del texto
+		panelInsertarProceso.add(JTFinsertDesPro);//Anadimos	
+		
+		eFechaEntradaPro = new JLabel("Fecha de Entrada");
+		eFechaEntradaPro.setBounds(50, 230, 200, 30);
+		eFechaEntradaPro.setFont(new Font("Segoe UI", Font.BOLD, 18));// Damos formato al contenido
+		eFechaEntradaPro.setForeground(Color.DARK_GRAY);// Color del texto
+		eFechaEntradaPro.setHorizontalAlignment(JLabel.CENTER);
+		panelInsertarProceso.add(eFechaEntradaPro);// Anadimos
+		
+		calendarEntradaPro = new JDateChooser("yyyy/MM/dd", "####/##/##", '_');
+		calendarEntradaPro.getJCalendar();
+		calendarEntradaPro.repaint();
+		calendarEntradaPro.setBounds(50,270,200,30);	
+		panelInsertarProceso.add(calendarEntradaPro);		
+	    
+	    BinsertFinalProceso = new JButton("INSERTAR");
+	    BinsertFinalProceso.setBounds(120,470,110,50);
+	    BinsertFinalProceso.setBackground(colorVerdeAcens);
+	    BinsertFinalProceso.setBorder(null);
+	    BinsertFinalProceso.setForeground(colorNegro);
+	    BinsertFinalProceso.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    panelInsertarProceso.add(BinsertFinalProceso);		
+		
+	}
+
+	private void panelListarProcesos() {
+		// TODO Auto-generated method stub
+		
+		//PANEL LISTAR PROCESOS
+		
+		panelListarProceso = new JPanel();
+		panelListarProceso.setBackground(Color.LIGHT_GRAY);
+		panelListarProceso.setBounds(260, 110, 925, 550);
+		panelListarProceso.setLayout(null);
+		add(panelListarProceso);
+		panelListarProceso.setVisible(false);
+		
+		//Creación de la tabla Candidatos		
+		
+		barraProcesos = new JScrollPane();
+		barraProcesos.setBounds(20, 20, 850, 300);
+		panelListarProceso.add(barraProcesos);
+
+		String titulosProcesos[] = { "IdProceso", "Nombre Proceso", "Cliente", "Responsable", "Dirección", "Departamento", 
+				"Fecha Entrada", "Estado Proceso", "Descripción Trabajo" };
+		String infoProcesos[][] = AccesoDB.obtenerMatrizProcesos();
+
+		TableModel model = new DefaultTableModel(infoProcesos, titulosProcesos);
+		tablaProcesos = new JTable(model);			
+		tablaProcesos.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		tablaProcesos.setFillsViewportHeight(true);
+		barraProcesos.setViewportView(tablaProcesos);
+			
+		((AbstractTableModel) model).fireTableDataChanged();
+		model.addTableModelListener(tablaProcesos);
+		
+		BExportProceso = new JButton("EXPORTAR");
+		BExportProceso.setBounds(20,350,110,50);
+		BExportProceso.setBackground(colorVerdeAcens);
+		BExportProceso.setBorder(null);
+		BExportProceso.setForeground(colorNegro);
+		BExportProceso.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		panelListarProceso.add(BExportProceso);	
+		
+	}
+
+	private void panelBotoneraProceso() {
+		// TODO Auto-generated method stub
+		
+		botoneraPanelProceso = new JPanel();
+		botoneraPanelProceso.setBackground(new Color(220, 220, 220));
+		botoneraPanelProceso.setBounds(245, 0, 950, 100);
+		botoneraPanelProceso.setLayout(null);
+		add(botoneraPanelProceso);
+		botoneraPanelProceso.setVisible(false);
+		
+		botonListarProceso = new JButton("LISTAR PROCESOS");
+		botonListarProceso.setBounds(20,20,160,60);
+		botonListarProceso.setBackground(colorNegro);
+		botonListarProceso.setBorder(null);
+		botonListarProceso.setForeground(colorVerdeAcens);
+		botonListarProceso.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
+		botoneraPanelProceso.add(botonListarProceso);
+		
+		botonInsertarProceso = new JButton("INSERTAR PROCESO");
+		botonInsertarProceso.setBounds(200,20,160,60);
+		botonInsertarProceso.setBackground(colorNegro);
+		botonInsertarProceso.setBorder(null);
+		botonInsertarProceso.setForeground(colorVerdeAcens);
+		botonInsertarProceso.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
+		botoneraPanelProceso.add(botonInsertarProceso);
+		
+		botonConsultarProceso = new JButton("CONSULTAR PROCESO");
+		botonConsultarProceso.setBounds(380,20,160,60);
+		botonConsultarProceso.setBackground(colorNegro);
+		botonConsultarProceso.setBorder(null);
+		botonConsultarProceso.setForeground(colorVerdeAcens);
+		botonConsultarProceso.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
+		botoneraPanelProceso.add(botonConsultarProceso);
+		
+		botonUpdateProceso = new JButton("ACTUALIZAR PROCESO");
+		botonUpdateProceso.setBounds(560,20,160,60);
+		botonUpdateProceso.setBackground(colorNegro);
+		botonUpdateProceso.setBorder(null);
+		botonUpdateProceso.setForeground(colorVerdeAcens);
+		botonUpdateProceso.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
+		botoneraPanelProceso.add(botonUpdateProceso);
+		
+		botonDeleteProceso = new JButton("ELIMINAR PROCESO");
+		botonDeleteProceso.setBounds(740,20,160,60);
+		botonDeleteProceso.setBackground(colorNegro);
+		botonDeleteProceso.setBorder(null);
+		botonDeleteProceso.setForeground(colorVerdeAcens);
+		botonDeleteProceso.setFont(new Font("Segoe UI",Font.BOLD,12));//Damos formato al contenido
+		botoneraPanelProceso.add(botonDeleteProceso);
+		
+		Image imgPanelProceso = new ImageIcon("imagenes\\proceso1.jpg").getImage();
+		imagenProceso = new JLabel(new ImageIcon(imgPanelProceso.getScaledInstance(700, 400, Image.SCALE_SMOOTH)));
+		//las coordenadas del final han de coincidir con las anteriores
+		imagenProceso.setBounds(350, 150, 700, 400);
+		add(imagenProceso);
+		imagenProceso.setVisible(false);
 		
 	}
 
@@ -471,6 +713,7 @@ public class Ventana extends JFrame {
 	}
 
 	private void panelInsertarCandidato() {
+		
 		//PANEL INSERTAR CANDIDATOS
 		
 		panelInsertarCandidato = new JPanel();
@@ -582,6 +825,7 @@ public class Ventana extends JFrame {
 	}
 
 	private void panelListarCandidatos() {
+		
 		//PANEL LISTAR CANDIDATOS
 		
 		panelListarCandidato = new JPanel();
@@ -689,6 +933,8 @@ public class Ventana extends JFrame {
 	//METODO PARA PONER A LA ESCUCHA LOS EVENTOS	
 
 	public void Eventos (Eventos manejador) {
+		
+		//Candidatos
 
 		botonInicioCandidato.addMouseListener(manejador);
 		botonListarCandidato.addMouseListener(manejador);
@@ -703,6 +949,13 @@ public class Ventana extends JFrame {
 		botonDeleteCandidato.addMouseListener(manejador);
 		BVerificarDeleteCan.addMouseListener(manejador);
 		BDeleteFinalCan.addMouseListener(manejador);
+		
+		//Procesos
+		
+		botonInicioProceso.addMouseListener(manejador);
+		botonListarProceso.addMouseListener(manejador);
+		BExportProceso.addMouseListener(manejador);
+		botonInsertarProceso.addMouseListener(manejador);
 
 	}
 	
@@ -1057,5 +1310,173 @@ public class Ventana extends JFrame {
 
 	public void setBDeleteFinalCan(JButton bDeleteFinalCan) {
 		BDeleteFinalCan = bDeleteFinalCan;
+	}
+
+	public JPanel getBotoneraPanelProceso() {
+		return botoneraPanelProceso;
+	}
+
+	public JButton getBotonListarProceso() {
+		return botonListarProceso;
+	}
+
+	public JButton getBotonInsertarProceso() {
+		return botonInsertarProceso;
+	}
+
+	public JButton getBotonConsultarProceso() {
+		return botonConsultarProceso;
+	}
+
+	public JButton getBotonUpdateProceso() {
+		return botonUpdateProceso;
+	}
+
+	public JButton getBotonDeleteProceso() {
+		return botonDeleteProceso;
+	}
+
+	public JLabel getImagenProceso() {
+		return imagenProceso;
+	}
+
+	public void setBotoneraPanelProceso(JPanel botoneraPanelProceso) {
+		this.botoneraPanelProceso = botoneraPanelProceso;
+	}
+
+	public void setBotonListarProceso(JButton botonListarProceso) {
+		this.botonListarProceso = botonListarProceso;
+	}
+
+	public void setBotonInsertarProceso(JButton botonInsertarProceso) {
+		this.botonInsertarProceso = botonInsertarProceso;
+	}
+
+	public void setBotonConsultarProceso(JButton botonConsultarProceso) {
+		this.botonConsultarProceso = botonConsultarProceso;
+	}
+
+	public void setBotonUpdateProceso(JButton botonUpdateProceso) {
+		this.botonUpdateProceso = botonUpdateProceso;
+	}
+
+	public void setBotonDeleteProceso(JButton botonDeleteProceso) {
+		this.botonDeleteProceso = botonDeleteProceso;
+	}
+
+	public void setImagenProceso(JLabel imagenProceso) {
+		this.imagenProceso = imagenProceso;
+	}
+
+	public JPanel getPanelListarProceso() {
+		return panelListarProceso;
+	}
+
+	public JTable getTablaProcesos() {
+		return tablaProcesos;
+	}
+
+	public void setPanelListarProceso(JPanel panelListarProceso) {
+		this.panelListarProceso = panelListarProceso;
+	}
+
+	public void setTablaProcesos(JTable tablaProcesos) {
+		this.tablaProcesos = tablaProcesos;
+	}
+
+	public JButton getBExportProceso() {
+		return BExportProceso;
+	}
+
+	public void setBExportProceso(JButton bExportProceso) {
+		BExportProceso = bExportProceso;
+	}
+
+	public JPanel getPanelInsertarProceso() {
+		return panelInsertarProceso;
+	}
+
+	public JTextField getJTFinsertNomPro() {
+		return JTFinsertNomPro;
+	}
+
+	public JTextField getJTFinsertClientePro() {
+		return JTFinsertClientePro;
+	}
+
+	public JTextField getJTFinsertResPro() {
+		return JTFinsertResPro;
+	}
+
+	public JTextField getJTFinsertDireccPro() {
+		return JTFinsertDireccPro;
+	}
+
+	public JTextField getJTFinsertDepPro() {
+		return JTFinsertDepPro;
+	}
+
+	public JTextField getJTFinsertEstadoPro() {
+		return JTFinsertEstadoPro;
+	}
+
+	public JButton getBinsertFinalProceso() {
+		return BinsertFinalProceso;
+	}
+
+	public JDateChooser getCalendarEntradaPro() {
+		return calendarEntradaPro;
+	}
+
+	public void setPanelInsertarProceso(JPanel panelInsertarProceso) {
+		this.panelInsertarProceso = panelInsertarProceso;
+	}
+
+	public void setJTFinsertNomPro(JTextField jTFinsertNomPro) {
+		JTFinsertNomPro = jTFinsertNomPro;
+	}
+
+	public void setJTFinsertClientePro(JTextField jTFinsertClientePro) {
+		JTFinsertClientePro = jTFinsertClientePro;
+	}
+
+	public void setJTFinsertResPro(JTextField jTFinsertResPro) {
+		JTFinsertResPro = jTFinsertResPro;
+	}
+
+	public void setJTFinsertDireccPro(JTextField jTFinsertDireccPro) {
+		JTFinsertDireccPro = jTFinsertDireccPro;
+	}
+
+	public void setJTFinsertDepPro(JTextField jTFinsertDepPro) {
+		JTFinsertDepPro = jTFinsertDepPro;
+	}
+
+	public void setJTFinsertEstadoPro(JTextField jTFinsertEstadoPro) {
+		JTFinsertEstadoPro = jTFinsertEstadoPro;
+	}
+
+	public JTextField getJTFinsertDesPro() {
+		return JTFinsertDesPro;
+	}
+
+	public void setJTFinsertDesPro(JTextField jTFinsertDesPro) {
+		JTFinsertDesPro = jTFinsertDesPro;
+	}
+
+	public void setBinsertFinalProceso(JButton binsertFinalProceso) {
+		BinsertFinalProceso = binsertFinalProceso;
+	}
+
+	public void setCalendarEntradaPro(JDateChooser calendarEntradaPro) {
+		this.calendarEntradaPro = calendarEntradaPro;
+	}
+
+	public JLabel geteFechaEntradaPro() {
+		return eFechaEntradaPro;
+	}
+
+	public void seteFechaEntradaPro(JLabel eFechaEntradaPro) {
+		this.eFechaEntradaPro = eFechaEntradaPro;
 	}
 }

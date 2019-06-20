@@ -1,0 +1,6 @@
+IDProceso,Nombre_Proceso,Cliente,Responsable,Direccion,Departamento,Fecha_Entrada,Estado_Proceso,Descripcion_Trabajo
+1,Administrativo,Acens,Jesús AA,Director,Desarrollo,2019-04-16,OK,tecnico de procesos 
+2,Tecnico informático,Acens,Jesus,Director,Desarrollo,2019-04-16,OK,Descripcion
+3,Programador,Acens,Pepito Pérez,C/Ejemplo,Informatica,1970-01-01,Iniciado,Programador Java
+22,a,a,a,a,a,2019-04-24,a,a
+23,Ejemplo1,Telefonica,MariPaz,Avd. La Paz S/N,Informatica,2019-04-24,Iniciado,Prueba

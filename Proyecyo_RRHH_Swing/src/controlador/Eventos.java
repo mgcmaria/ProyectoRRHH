@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -53,6 +55,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubpanelConsulCan().setVisible(false);
 			ventana.getPanelUpdateCan().setVisible(false);
 			ventana.getPanelEliminarCan().setVisible(false);
+			
+			ocultarPanelesProcesos(); //Ocultamos paneles de procesos
 		}
 		
 		else if(e.getSource() == ventana.getBotonListarCandidato()) {
@@ -69,11 +73,13 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelUpdateCan().setVisible(false);
 			ventana.getPanelEliminarCan().setVisible(false);
 			
+			ocultarPanelesProcesos(); //Ocultamos paneles de procesos
+			
 		}
 		
 		else if(e.getSource() == ventana.getBExportCandidato()) {
 			
-			Boolean ok_fichero = AccesoDB.exportarFicheroEmpleados();			
+			Boolean ok_fichero = AccesoDB.exportarFicheroCandidatos();			
 
 			if (ok_fichero == true) {
 				ventana.getEResulExportCan().setText("Fichero generado con éxito");
@@ -107,6 +113,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubpanelConsulCan().setVisible(false);
 			ventana.getPanelUpdateCan().setVisible(false);
 			ventana.getPanelEliminarCan().setVisible(false);
+			
+			ocultarPanelesProcesos(); //Ocultamos paneles de procesos
 		}
 		
 		else if(e.getSource() == ventana.getBinsertFinalCandidato()) {
@@ -194,6 +202,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelUpdateCan().setVisible(false);
 			ventana.getPanelEliminarCan().setVisible(false);
 			
+			ocultarPanelesProcesos(); //Ocultamos paneles de procesos
+			
 		}
 		
 		else if(e.getSource() == ventana.getBconsulFinalCandidato()) {
@@ -269,6 +279,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getSubpanelConsulCan().setVisible(false);
 			ventana.getPanelInsertarCandidato().setVisible(false);
 			ventana.getPanelEliminarCan().setVisible(false);
+			
+			ocultarPanelesProcesos(); //Ocultamos paneles de procesos
 			
 		}
 		
@@ -375,6 +387,8 @@ public class Eventos implements ActionListener, MouseListener {
 			ventana.getPanelConsultarCandidato().setVisible(false);
 			ventana.getSubpanelConsulCan().setVisible(false);
 			ventana.getPanelInsertarCandidato().setVisible(false);
+			
+			ocultarPanelesProcesos(); //Ocultamos paneles de procesos
 		}
 		
 		else if(e.getSource() == ventana.getBVerificarDeleteCan()) {
@@ -459,8 +473,130 @@ public class Eventos implements ActionListener, MouseListener {
 				} 
 			}		
 		}
+		
+		// TODO Auto-generated method stub
+		if(e.getSource() == ventana.getBotonInicioProceso()) {
+			
+			//Mostramos la botonera fija y la imagen de proceso
+			ventana.getBotoneraPanelProceso().setVisible(true);
+			ventana.getImagenProceso().setVisible(true);
+			
+			ocultarPanelesCandidatos(); //Ocultamos paneles de candidatos
+			
+		}
+		
+		if(e.getSource() == ventana.getBotonListarProceso()) {
+			
+			//Mostramos la botonera de Candidatos
+			ventana.getPanelListarProceso().setVisible(true);
+			
+			ocultarPanelesCandidatos(); //Ocultamos paneles de candidatos
+			
+			//Ocultamos el resto --> PROCESOS
+			ventana.getImagenProceso().setVisible(false);
+			
+		}
+		
+		else if(e.getSource() == ventana.getBExportProceso()) {
+			
+			Boolean ok_fichero = AccesoDB.exportarFicheroProceso();			
+
+			if (ok_fichero == true) {
+				// Mostramos Dialog
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"Fichero generado con éxito", 
+						"Exportar Proceso",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				// Mostramos Dialog
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"Error al generar el fichero", 
+						"Exportar Proceso",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		else if(e.getSource() == ventana.getBotonInsertarProceso()) {
+			
+			//Mostramos el panel de Insertar Proceso
+			ventana.getPanelInsertarProceso().setVisible(true);
+			
+			ocultarPanelesCandidatos(); //Ocultamos paneles de candidatos
+			
+			//Ocultamos el resto --> PROCESOS
+			ventana.getImagenProceso().setVisible(false);
+			ventana.getPanelListarProceso().setVisible(false);
+			
+			ventana.getCalendarEntradaPro().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+				public void propertyChange(java.beans.PropertyChangeEvent evt) {
+					// If the 'date' property was changed...
+					if ("date".equals(evt.getPropertyName())) {
+						try {
+							String año = Integer
+									.toString(ventana.getCalendarEntradaPro().getCalendar().get(Calendar.YEAR));
+
+							String mes = Integer
+									.toString(ventana.getCalendarEntradaPro().getCalendar().get(Calendar.MONTH)+1);
+							String dia = Integer
+									.toString(ventana.getCalendarEntradaPro().getCalendar().get(Calendar.DAY_OF_MONTH));
+							
+							String fecha = año+"/"+mes+"/"+dia;
+							System.out.println(fecha);							
+
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				}
+			});
+			
+			/*
+			 * Calendar cal = new GregorianCalendar();
+			 * 
+			 * //desde aqui empieza lo del jdatechooser String dia =
+			 * Integer.toString(ventana.getCalendarEntradaPro().getCalendar().get(Calendar.
+			 * DAY_OF_MONTH)); String mes =
+			 * Integer.toString(ventana.getCalendarEntradaPro().getCalendar().get(Calendar.
+			 * MONTH)+1); String año =
+			 * Integer.toString(ventana.getCalendarEntradaPro().getCalendar().get(Calendar.
+			 * YEAR)); String fecha1 = año + "-" + mes +"-"+dia;
+			 * 
+			 * if(ventana.getCalendarEntradaPro().getDate() != null){
+			 * 
+			 * 
+			 * System.out.println(ventana.getCalendarEntradaPro().getDate()); }
+			 * 
+			 * System.out.println(fecha1);
+			 */
+			
+			
+			
+			
+			
+		}
+	}
+
+	private void ocultarPanelesCandidatos() {
+		//CANDIDATOS 
+		ventana.getImagenInicio().setVisible(false);
+		ventana.getPanelListarCandidato().setVisible(false);
+		ventana.getPanelInsertarCandidato().setVisible(false);
+		ventana.getPanelConsultarCandidato().setVisible(false);
+		ventana.getSubpanelConsulCan().setVisible(false);
+		ventana.getPanelUpdateCan().setVisible(false);
+		ventana.getPanelEliminarCan().setVisible(false);
+		ventana.getBotoneraPanelCandidato().setVisible(false);
+		ventana.getImagenCandidato().setVisible(false);
 	}
 	
+	private void ocultarPanelesProcesos() {
+		//PROCESOS
+		ventana.getBotoneraPanelProceso().setVisible(false);
+		ventana.getImagenProceso().setVisible(false);
+		ventana.getPanelListarProceso().setVisible(false);
+		ventana.getPanelInsertarProceso().setVisible(false);
+		
+	}
 
 
 	private void actualizarTablaCandidatos() {

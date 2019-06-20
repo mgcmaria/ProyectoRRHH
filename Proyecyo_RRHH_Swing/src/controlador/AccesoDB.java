@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import tablas.Candidato;
+import tablas.Proceso;
 
 public class AccesoDB {
 	
@@ -113,7 +115,8 @@ public static Connection conexion() {
 			JOptionPane.showMessageDialog(new JFrame(), 
 					"No está conectado al sistema de Acens",
 					"Conexión",
-					JOptionPane.ERROR_MESSAGE);		
+					JOptionPane.ERROR_MESSAGE);	
+			System.exit(0);
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -206,7 +209,7 @@ public static Connection conexion() {
 		return c;
 	}
 
-	public static Boolean exportarFicheroEmpleados() {
+	public static Boolean exportarFicheroCandidatos() {
 		
 		File f = new File("candidatos.csv");		
 
@@ -291,6 +294,126 @@ public static Connection conexion() {
 		}
 		return afectados;
 		
+	}
+
+	public static String[][] obtenerMatrizProcesos() {
+
+		Connection conexion = conexion();	
+		
+		ArrayList<Proceso> listaProcesos = datosProcesos(conexion);
+
+		String matrizInfo[][] = new String[listaProcesos.size()][9];		
+
+		for (int i = 0; i < listaProcesos.size(); i++) {
+
+			matrizInfo[i][0] = listaProcesos.get(i).getIdProceso()+"";
+			matrizInfo[i][1] = listaProcesos.get(i).getNombrePro()+"";
+			matrizInfo[i][2] = listaProcesos.get(i).getClientePro()+"";
+			matrizInfo[i][3] = listaProcesos.get(i).getResponsablePro()+"";
+			matrizInfo[i][4] = listaProcesos.get(i).getDireccionPro()+"";
+			matrizInfo[i][5] = listaProcesos.get(i).getDepartPro()+"";
+			matrizInfo[i][6] = listaProcesos.get(i).getFechaEntradaPro()+"";
+			matrizInfo[i][7] = listaProcesos.get(i).getEstadoPro()+"";
+			matrizInfo[i][8] = listaProcesos.get(i).getDesTrabajoPro()+"";
+		}		
+
+		return matrizInfo;		
+	}
+
+	private static ArrayList<Proceso> datosProcesos(Connection conexion) {
+		
+		ArrayList<Proceso> lista_procesos = new ArrayList<Proceso>();
+		
+		Proceso p;	
+
+		try {
+			
+			Statement sentencia = conexion.createStatement(); // Creamos sentencia con Statement
+			// Consulta SQL con resulset
+			ResultSet rs = sentencia.executeQuery("SELECT * FROM RS_PROCESOS_SELECCION order by idproceso");		
+
+			// Mientras haya registros anadimos al ArrayList
+
+			while (rs.next()) {
+				
+				int idProceso = rs.getInt("IDPROCESO");
+				String nombrePro = rs.getString("NOMBRE");
+				String clientePro = rs.getString("CLIENTE");
+				String responsablePro = rs.getString("RESPONSABLE");
+				String direccionPro = rs.getString("DIRECCION");
+				String departPro = rs.getString("DEPARTAMENTO");
+				Date fechaEntradaPro = rs.getDate("FECHAENTRADA");
+				String estadoPro = rs.getString("ESTADOPROCESO");	
+				String desTrabajoPro = rs.getString("DESCRIPCIONTRABAJO");
+
+				p = new Proceso(idProceso, nombrePro, clientePro, responsablePro, direccionPro, departPro, 
+						fechaEntradaPro, estadoPro, desTrabajoPro);	
+
+				lista_procesos.add(p);
+			}
+		} catch (NullPointerException e) {
+			e.getMessage();
+			//Mostramos Dialog
+			JOptionPane.showMessageDialog(new JFrame(), 
+					"No está conectado al sistema de Acens",
+					"Conexión",
+					JOptionPane.ERROR_MESSAGE);	
+			System.exit(0);
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getErrorCode());
+	
+		}
+		return lista_procesos; 	
+	}
+
+	public static Boolean exportarFicheroProceso() {
+		// TODO Auto-generated method stub
+		
+		File f = new File("procesos.csv");		
+
+		Connection conexion = AccesoDB.conexion();		
+
+		ArrayList<Proceso> lista_procesos = datosProcesos(conexion);		
+
+		try {
+
+			FileWriter ficheroPro = new FileWriter(f);			
+
+			//Escribimos los títulos de los campos de las columnas
+			ficheroPro.write("IDProceso,Nombre_Proceso,Cliente,Responsable,Direccion,Departamento,Fecha_Entrada,"
+					+ "Estado_Proceso,Descripcion_Trabajo");
+			ficheroPro.write("\n"); // Salto línea			
+
+			for (Proceso p : lista_procesos) {		
+
+				ficheroPro.write(Integer.toString(p.getIdProceso()));
+				ficheroPro.write(",");
+				ficheroPro.write(p.getNombrePro());
+				ficheroPro.write(",");
+				ficheroPro.write(p.getClientePro());
+				ficheroPro.write(",");
+				ficheroPro.write(p.getResponsablePro());
+				ficheroPro.write(",");
+				ficheroPro.write(p.getDireccionPro());
+				ficheroPro.write(",");
+				ficheroPro.write(p.getDepartPro());
+				ficheroPro.write(",");
+				ficheroPro.write(String.valueOf(p.getFechaEntradaPro()));
+				ficheroPro.write(",");
+				ficheroPro.write(p.getEstadoPro());
+				ficheroPro.write(",");
+				ficheroPro.write(p.getDesTrabajoPro());
+				ficheroPro.write("\n");
+			}
+			ficheroPro.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }
