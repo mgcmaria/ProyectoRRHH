@@ -253,23 +253,6 @@ public static Connection conexion() {
 		return true;
 	}
 
-	public static int actualizarCandidato(String idCandidato, String campo, String nuevoValor, Connection conexion) {
-
-		int afectados = 0;		
-
-		// Almacenamos en un String la Sentencia SQL
-
-		String sql = "UPDATE RS_CANDIDATOS SET " + campo +"= '"+ nuevoValor +"' WHERE IDCANDIDATO LIKE '%" + Integer.parseInt(idCandidato) + "%'";		
-		
-		try {
-			PreparedStatement sentencia = conexion.prepareStatement(sql);
-			afectados = sentencia.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return afectados;
-	}
-
 	public static int eliminarCandidato(String idCanEli, Connection conexion) {
 		// TODO Auto-generated method stub
 		
@@ -415,5 +398,22 @@ public static Connection conexion() {
 		}
 		return true;
 	}
+
+	public static int actualizarCandidato(ArrayList<Candidato> lisCanUP, Connection conexion) {
+		
+		int afectados = 0;		
+
+		/*
+		 * // Almacenamos en un String la Sentencia SQL String sql =
+		 * "UPDATE RS_CANDIDATOS SET " + campo +"= '"+ nuevoValor
+		 * +"' WHERE IDCANDIDATO LIKE '%" + Integer.parseInt(idCandidato) + "%'";
+		 * 
+		 * try { PreparedStatement sentencia = conexion.prepareStatement(sql); afectados
+		 * = sentencia.executeUpdate(); } catch (SQLException e) { e.printStackTrace();
+		 * }
+		 */
+		return afectados;
+	}
+
 
 }

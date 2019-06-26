@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -261,11 +260,13 @@ public class Eventos implements ActionListener, MouseListener {
 			
 			//Limpiamos etiquetas y ocultamos boton actualizar
 			ventana.getJTFidUpdateCan().setText("");
-			ventana.getJTFUpdateNewdataCan().setText("");
-			ventana.getEpreguntaUpdateCan().setVisible(false);
-			ventana.getBUpdateFinalCandidato().setVisible(false);
-			ventana.getEresulVerUpdateCan().setText("");
-			ventana.getEresulUpdateFinalCan().setText("");
+			ventana.getJTFNomCanUP().setText("");
+			ventana.getJTFApellCanUP().setText("");
+			ventana.getJTFTeleCanUP().setText("");
+			ventana.getJTFEmailCanUP().setText("");
+			ventana.getJTFPerfilCanUP().setText("");
+			ventana.getJTFFuenteCanUP().setText("");
+			ventana.getJTFObscanUP().setText("");
 			
 			//Mostramos Panel de Actualizar Candidatos
 			ventana.getPanelUpdateCan().setVisible(true);
@@ -286,86 +287,87 @@ public class Eventos implements ActionListener, MouseListener {
 		
 		else if(e.getSource() == ventana.getBVerificarUpdateCan()) {
 			
-			//Recogemos los valores de IdCandidato y el nuevo valor
+			// Recogemos los valores de IdCandidato y el nuevo valor
 			String idCandidato = ventana.getJTFidUpdateCan().getText();
-			String campo = ventana.getComboUpdateCandidato().getSelectedItem().toString();
-			String nuevoValor = ventana.getJTFUpdateNewdataCan().getText();	
-			
-			if(ventana.getJTFidUpdateCan().getText().isEmpty() || ventana.getJTFUpdateNewdataCan().getText().isEmpty()) {
 
-				//Mostramos Dialog con mensaje
+			if (ventana.getJTFidUpdateCan().getText().isEmpty()) {
+
+				// Mostramos Dialog con mensaje
 				JOptionPane.showMessageDialog(new JFrame(), 
-						"Rellene todos los campos",
+						"Introduzca un Id de Candidato", 
 						"Actualizar Candidato",
-						JOptionPane.ERROR_MESSAGE);		
-				
-			//Comprobamos que el telefono no tenga más de 9 carateres
-			} else if(campo.contains("TELEFONO") && nuevoValor.length() > 9) {
-					//Mostramos Dialog
-					JOptionPane.showMessageDialog(new JFrame(), 
-							"El telefono no puede superar los 9 caracteres",
-							"Actualizar candidato",
-							JOptionPane.ERROR_MESSAGE);	
-					
-			//Comprobamos ademas que el telefono contega solo numeros
-			} else if (campo.contains("TELEFONO") && !nuevoValor.matches("[0-9]*")){
-
-				//Mostramos Dialog
-				JOptionPane.showMessageDialog(new JFrame(), 
-						"El teléfono sólo puede ser numérico",
-						"Actualizar candidato",
 						JOptionPane.ERROR_MESSAGE);
-				
-			} else { //Si pasa las validaciones
-				
-				//Obtenemos la lista de candidatos y la almacenamos en un ArrayList
-				ArrayList<Candidato> listaCandidatos = AccesoDB.datosCandidatos(conexion);				
+			}
 
-				//Recorremos el ArrayList para ver si coincide el idCandidato introducido por el usuario
-				for (Candidato candidato : listaCandidatos) {				
+			// Obtenemos la lista de candidatos y la almacenamos en un ArrayList
+			ArrayList<Candidato> listaCandidatos = AccesoDB.datosCandidatos(conexion);
 
-					if((candidato.getIdCandidato() == Integer.parseInt(idCandidato))) {
-						ventana.getEresulVerUpdateCan().setText("El candidato: "+ candidato.getNombre()
-						+", " + candidato.getApellidos()+", modificará el campo "+ campo + " por: "+ nuevoValor);
-						ventana.getEpreguntaUpdateCan().setVisible(true);
-						ventana.getBUpdateFinalCandidato().setVisible(true);						
+			//Variable que indica si coincide el candidato
+			int encontrado = 0;
+			
+			// Recorremos el ArrayList para ver si coincide el idCandidato introducido por el usuario
+			for (Candidato candidato : listaCandidatos) {
 
-						return;			
-
-					} else {
-						ventana.getEresulVerUpdateCan().setText("Error al seleccionar candidato / No existe");
-					}
-				}				
-			}			
+				if ((candidato.getIdCandidato() == Integer.parseInt(idCandidato))) {
+					ventana.getJTFNomCanUP().setText(candidato.getNombre());
+					ventana.getJTFApellCanUP().setText(candidato.getApellidos());
+					ventana.getJTFTeleCanUP().setText(Integer.toString(candidato.getTelefono()));
+					ventana.getJTFEmailCanUP().setText(candidato.getEmail());
+					ventana.getJTFPerfilCanUP().setText(candidato.getPerfil());
+					ventana.getJTFFuenteCanUP().setText(candidato.getFuente());
+					ventana.getJTFObscanUP().setText(candidato.getObservaciones());
+					encontrado = 1; //Cambiamos el valor a 1
+					return;
+				}
+			}
+			
+			//Si no encuentra el candidato
+			if (encontrado == 0) {					
+				// Mostramos Dialog con mensaje
+				JOptionPane.showMessageDialog(new JFrame(), 
+						"Error al recuperar Candidato o no existe.", 
+						"Actualizar Candidato",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}		
 
 		else if(e.getSource() == ventana.getBUpdateFinalCandidato()) {
+			
+			//Creamos un arrayList de Candidato
+			ArrayList<Candidato> lisCanUP = new ArrayList<Candidato>();
 
-			//Recogemos los valores de IdCandidato y el nuevo valor
-			String idCandidato = ventana.getJTFidUpdateCan().getText();
-			String campo = ventana.getComboUpdateCandidato().getSelectedItem().toString();
-			String nuevoValor = ventana.getJTFUpdateNewdataCan().getText();				
-				
-			// Los pasamos como parametros en el método actualizar
-			int afectados = AccesoDB.actualizarCandidato(idCandidato, campo, nuevoValor, conexion);
-
-			if (afectados == 0) {
-
-				// Mostramos Dialog
-				JOptionPane.showMessageDialog(new JFrame(), 
-						"Error al actualizar candidato", 
-						"Actualizar candidato",
-						JOptionPane.ERROR_MESSAGE);
-
-			} else {
-				// ventana.getEresulUpdateFinalCan().setText("Candidato actualizado con éxito");
-				// Mostramos Dialog
-				JOptionPane.showMessageDialog(new JFrame(), 
-						"Candidato actualizado con éxito", 
-						"Actualizar candidato",
-						JOptionPane.INFORMATION_MESSAGE);
-				actualizarTablaCandidatos();
-			}
+			//Recogemos los valores del candidato
+			int idCandidato = Integer.parseInt(ventana.getJTFidUpdateCan().getText());		
+			String nombreCan = ventana.getJTFNomCanUP().getText();
+			String apellCan = ventana.getJTFApellCanUP().getText();
+			int telCan = Integer.parseInt(ventana.getJTFTeleCanUP().getText());
+			String emailCan = ventana.getJTFEmailCanUP().getText();
+			String perfilCan = ventana.getJTFPerfilCanUP().getText();
+			String fuenteCan = ventana.getJTFFuenteCanUP().getText();
+			String obsCan = ventana.getJTFObscanUP().getText();
+			
+			//Lo almacenamos en un nuevo Objeto de Candidato
+			Candidato c = new Candidato(idCandidato, nombreCan, apellCan, emailCan, telCan, fuenteCan, perfilCan, obsCan);
+			
+			//Lo añadimos al Array
+			lisCanUP.add(c);
+			
+			//Llamamos al método actualizar Candidato
+			int afectados = AccesoDB.actualizarCandidato(lisCanUP, conexion);
+			
+			/*
+			 * if (afectados == 0) {
+			 * 
+			 * // Mostramos Dialog JOptionPane.showMessageDialog(new JFrame(),
+			 * "Error al actualizar candidato", "Actualizar candidato",
+			 * JOptionPane.ERROR_MESSAGE);
+			 * 
+			 * } else { //
+			 * ventana.getEresulUpdateFinalCan().setText("Candidato actualizado con éxito");
+			 * // Mostramos Dialog JOptionPane.showMessageDialog(new JFrame(),
+			 * "Candidato actualizado con éxito", "Actualizar candidato",
+			 * JOptionPane.INFORMATION_MESSAGE); actualizarTablaCandidatos(); }
+			 */
 		} 	
 		
 		else if(e.getSource() == ventana.getBotonDeleteCandidato()) {

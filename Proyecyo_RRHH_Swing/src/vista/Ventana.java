@@ -34,14 +34,20 @@ public class Ventana extends JFrame {
 	private JScrollPane barraCandidatos;
 	private JTable tablaCandidatos;
 	private JTextField JTFinsertNomCan,JTFinsertApellCan,JTFinsertEmailCan,JTFinsertTeleCan,
-		JTFinsertPerfilCan, JTFinsertFuenteCan, JTFinsertObscan, JTFResulComboConsulCan, JTFidUpdateCan,
-		JTFUpdateNewdataCan, JTFidEliminarCan;
+		JTFinsertPerfilCan, JTFinsertFuenteCan, JTFinsertObscan, JTFResulComboConsulCan, JTFidEliminarCan;
+	
+	//Panel Update con los campos del candidato
+	private JTextField JTFidUpdateCan, JTFNomCanUP,JTFApellCanUP,JTFEmailCanUP,JTFTeleCanUP, JTFPerfilCanUP, 
+		JTFFuenteCanUP, JTFObscanUP;
+	private JLabel EtituloNombreCanUP, EtituloApelCanUP, EtituloEmailCanUP, EtituloTelCanUP, EtituloFuenteCanUP, 
+		EtituloPerfilCanUP, EtituloObsCanUP, EInstruccionesCanUP;
+	
 	private JLabel etiInsertarCan, eResulInsertCan, etiConsultarCandidato, etiComboConsulCan, eResulConsulCan,
 		EresulConsultaIdCan, EresulConsultaNombreCan, EresulConsultaApelCan, EresulConsultaEmailCan, EresulConsultaTelCan,
 		EresulConsultaFuenteCan, EresulConsultaPerfilCan, EresulConsultaObsCan, EtituloConsultaIdCan, EtituloConsultaNombreCan, 
 		EtituloConsultaApelCan, EtituloConsultaEmailCan, EtituloConsultaTelCan, EtituloConsultaFuenteCan, EtituloConsultaPerfilCan, 
-		EtituloConsultaObsCan, EResulExportCan, etiUpdateCandidato, etiConsulUpCan, etiComboUpdateCan, etiUpNewDataCandidato,
-		EresulVerUpdateCan, EpreguntaUpdateCan,EresulUpdateFinalCan, etiEliminarCan, etiConsulEliminarCan, etiResulEliCan;
+		EtituloConsultaObsCan, EResulExportCan, etiUpdateCandidato, etiConsulUpCan, EpreguntaUpdateCan, 
+		etiEliminarCan, etiConsulEliminarCan, etiResulEliCan;
 	private JButton BExportCandidato, BinsertFinalCandidato, BconsulFinalCandidato, BVerificarUpdateCan,BUpdateFinalCandidato, 
 		BVerificarDeleteCan, BDeleteFinalCan;
 	private JComboBox <String> comboConsultaCandidato, comboUpdateCandidato;
@@ -457,79 +463,184 @@ public class Ventana extends JFrame {
 		JTFidUpdateCan.setForeground(colorGris);//Color del texto
 		panelUpdateCan.add(JTFidUpdateCan);//Anadimos	
 		
-		etiComboUpdateCan = new JLabel("Selecciona el campo a actualizar");
-		etiComboUpdateCan.setBounds(400, 70, 370, 30);
-		etiComboUpdateCan.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
-		etiComboUpdateCan.setForeground(Color.DARK_GRAY);//Color del texto
-		panelUpdateCan.add(etiComboUpdateCan);//Anadimos
-		
-		comboUpdateCandidato = new JComboBox<String>();
-		comboUpdateCandidato.addItem("NOMBRE");
-		comboUpdateCandidato.addItem("APELLIDOS");
-		comboUpdateCandidato.addItem("EMAIL");
-		comboUpdateCandidato.addItem("TELEFONO");
-		comboUpdateCandidato.addItem("FUENTE");
-		comboUpdateCandidato.addItem("PERFIL");
-		comboUpdateCandidato.addItem("OBSERVACIONES");
-		comboUpdateCandidato.setBounds(400, 110, 370, 30);
-		comboUpdateCandidato.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); 
-		comboUpdateCandidato.setForeground(colorGris);
-		panelUpdateCan.add(comboUpdateCandidato);
-		
-		etiUpNewDataCandidato = new JLabel("Introduce nuevo dato");
-		etiUpNewDataCandidato.setBounds(20, 150, 700, 30);
-		etiUpNewDataCandidato.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
-		etiUpNewDataCandidato.setForeground(Color.DARK_GRAY);//Color del texto
-		panelUpdateCan.add(etiUpNewDataCandidato);//Anadimos
-		
-		JTFUpdateNewdataCan = new JTextField();//Creamos el componente
-		TextPrompt placeholdernewdata = new TextPrompt("Nuevo valor", JTFUpdateNewdataCan);
-		placeholdernewdata.changeAlpha(0.75f);
-		placeholdernewdata.changeStyle(Font.ITALIC);
-		JTFUpdateNewdataCan.setBounds(20,190,370,30);//Posicionamos		
-		JTFUpdateNewdataCan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); 
-		JTFUpdateNewdataCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		JTFUpdateNewdataCan.setBackground(colorBlanco); //Color de fondo
-		JTFUpdateNewdataCan.setForeground(colorGris);//Color del texto
-		panelUpdateCan.add(JTFUpdateNewdataCan);//Anadimos	
-		
 		BVerificarUpdateCan = new JButton("VERIFICAR");
-		BVerificarUpdateCan.setBounds(520,170,110,50);
+		BVerificarUpdateCan.setBounds(410, 110, 110, 30);
 		BVerificarUpdateCan.setBackground(colorVerdeAcens);
 		BVerificarUpdateCan.setBorder(null);
 		BVerificarUpdateCan.setForeground(colorNegro);
-		BVerificarUpdateCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		BVerificarUpdateCan.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		panelUpdateCan.add(BVerificarUpdateCan);
 		
-		EresulVerUpdateCan = new JLabel();
-		EresulVerUpdateCan.setBounds(20, 240, 850, 30);
-		EresulVerUpdateCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		EresulVerUpdateCan.setForeground(Color.DARK_GRAY);//Color del texto 
-		panelUpdateCan.add(EresulVerUpdateCan);//Anadimos
+		EtituloNombreCanUP = new JLabel("Nombre");
+		EtituloNombreCanUP.setBounds(20, 150, 250, 30);
+		EtituloNombreCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		EtituloNombreCanUP.setForeground(Color.DARK_GRAY);//Color del texto
+		panelUpdateCan.add(EtituloNombreCanUP);//Anadimos
 		
-		EpreguntaUpdateCan = new JLabel("¿Deseas continuar?");
-		EpreguntaUpdateCan.setBounds(20, 280, 700, 30);
-		EpreguntaUpdateCan.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
-		EpreguntaUpdateCan.setForeground(Color.DARK_GRAY);//Color del texto
-		panelUpdateCan.add(EpreguntaUpdateCan);//Anadimos
-		EpreguntaUpdateCan.setVisible(false);
+		JTFNomCanUP = new JTextField();//Creamos el componente
+	    JTFNomCanUP.setBounds(20,180,250,30);//Posicionamos		
+	    JTFNomCanUP.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+	    JTFNomCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JTFNomCanUP.setBackground(colorBlanco); //Color de fondo
+	    JTFNomCanUP.setForeground(colorGris);//Color del texto
+	    panelUpdateCan.add(JTFNomCanUP);//Anadimos
+	    
+	    EtituloApelCanUP = new JLabel("Apellidos");
+	    EtituloApelCanUP.setBounds(280, 150, 350, 30);
+	    EtituloApelCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    EtituloApelCanUP.setForeground(Color.DARK_GRAY);//Color del texto
+		panelUpdateCan.add(EtituloApelCanUP);//Anadimos
+	    
+	    JTFApellCanUP = new JTextField();//Creamos el componente
+		JTFApellCanUP.setBounds(280,180,350,30);//Posicionamos		
+		JTFApellCanUP.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFApellCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFApellCanUP.setBackground(colorBlanco); //Color de fondo
+		JTFApellCanUP.setForeground(colorGris);//Color del texto
+		panelUpdateCan.add(JTFApellCanUP);//Anadimos
 		
+		EtituloTelCanUP = new JLabel("Telefono");
+		EtituloTelCanUP.setBounds(640, 150, 250, 30);
+		EtituloTelCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		EtituloTelCanUP.setForeground(Color.DARK_GRAY);//Color del texto
+		panelUpdateCan.add(EtituloTelCanUP);//Anadimos
+	    
+	    JTFTeleCanUP = new JTextField();//Creamos el componente
+		JTFTeleCanUP.setBounds(640,180,250,30);//Posicionamos		
+		JTFTeleCanUP.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFTeleCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFTeleCanUP.setBackground(colorBlanco); //Color de fondo
+		JTFTeleCanUP.setForeground(colorGris);//Color del texto
+		panelUpdateCan.add(JTFTeleCanUP);//Anadimos
+		
+		EtituloEmailCanUP = new JLabel("Email");
+		EtituloEmailCanUP.setBounds(20, 220, 250, 30);
+		EtituloEmailCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		EtituloEmailCanUP.setForeground(Color.DARK_GRAY);//Color del texto
+		panelUpdateCan.add(EtituloEmailCanUP);//Anadimos
+	    
+	    JTFEmailCanUP = new JTextField();//Creamos el componente
+		JTFEmailCanUP.setBounds(20,250,250,30);//Posicionamos		
+		JTFEmailCanUP.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+		JTFEmailCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		JTFEmailCanUP.setBackground(colorBlanco); //Color de fondo
+		JTFEmailCanUP.setForeground(colorGris);//Color del texto
+		panelUpdateCan.add(JTFEmailCanUP);//Anadimos
+		
+		EtituloFuenteCanUP = new JLabel("Fuente");
+		EtituloFuenteCanUP.setBounds(280, 220, 350, 30);
+		EtituloFuenteCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+		EtituloFuenteCanUP.setForeground(Color.DARK_GRAY);//Color del texto
+		panelUpdateCan.add(EtituloFuenteCanUP);//Anadimos
+	    
+	    JTFFuenteCanUP = new JTextField();//Creamos el componente
+	    JTFFuenteCanUP.setBounds(280,250,350,30);//Posicionamos		
+	    JTFFuenteCanUP.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+	    JTFFuenteCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JTFFuenteCanUP.setBackground(colorBlanco); //Color de fondo
+	    JTFFuenteCanUP.setForeground(colorGris);//Color del texto
+	    panelUpdateCan.add(JTFFuenteCanUP);//Anadimos
+	    
+	    EtituloPerfilCanUP = new JLabel("Perfil");
+	    EtituloPerfilCanUP.setBounds(640, 220, 250, 30);
+	    EtituloPerfilCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    EtituloPerfilCanUP.setForeground(Color.DARK_GRAY);//Color del texto
+		panelUpdateCan.add(EtituloPerfilCanUP);//Anadimos
+	    
+	    JTFPerfilCanUP = new JTextField();//Creamos el componente
+	    JTFPerfilCanUP.setBounds(640,250,250,30);//Posicionamos		
+	    JTFPerfilCanUP.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+	    JTFPerfilCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JTFPerfilCanUP.setBackground(colorBlanco); //Color de fondo
+	    JTFPerfilCanUP.setForeground(colorGris);//Color del texto
+	    panelUpdateCan.add(JTFPerfilCanUP);//Anadimos
+	    
+	    EtituloObsCanUP = new JLabel("Observaciones");
+	    EtituloObsCanUP.setBounds(20, 290, 870, 30);
+	    EtituloObsCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    EtituloObsCanUP.setForeground(Color.DARK_GRAY);//Color del texto
+		panelUpdateCan.add(EtituloObsCanUP);//Anadimos
+	    
+	    JTFObscanUP = new JTextField();//Creamos el componente
+	    JTFObscanUP.setBounds(20,320,870,30);//Posicionamos		
+	    JTFObscanUP.setBorder(BorderFactory.createLineBorder(colorVerdeAcens, 2)); //Eliminamos el borde
+	    JTFObscanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    JTFObscanUP.setBackground(colorBlanco); //Color de fondo
+	    JTFObscanUP.setForeground(colorGris);//Color del texto
+	    panelUpdateCan.add(JTFObscanUP);//Anadimos
+	    
+	    EInstruccionesCanUP = new JLabel("Modifica los campos y actualiza el candidato");
+	    EInstruccionesCanUP.setBounds(20, 360, 870, 30);
+	    EInstruccionesCanUP.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
+	    EInstruccionesCanUP.setForeground(Color.DARK_GRAY);//Color del texto
+		panelUpdateCan.add(EInstruccionesCanUP);//Anadimos
+	  
 		BUpdateFinalCandidato = new JButton("ACTUALIZAR");
-		BUpdateFinalCandidato.setBounds(20,330,110,50);
+		BUpdateFinalCandidato.setBounds(20,470,110,50);
 		BUpdateFinalCandidato.setBackground(colorVerdeAcens);
 		BUpdateFinalCandidato.setBorder(null);
 		BUpdateFinalCandidato.setForeground(colorNegro);
 		BUpdateFinalCandidato.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos formato al contenido
-		panelUpdateCan.add(BUpdateFinalCandidato);
-		BUpdateFinalCandidato.setVisible(false);
+		panelUpdateCan.add(BUpdateFinalCandidato);		
 		
-		EresulUpdateFinalCan = new JLabel();
-		EresulUpdateFinalCan.setBounds(20, 400, 700, 30);
-		EresulUpdateFinalCan.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
-		EresulUpdateFinalCan.setForeground(Color.DARK_GRAY);//Color del texto
-		panelUpdateCan.add(EresulUpdateFinalCan);//Anadimos
+		/*
+		 * EresulUpdateFinalCan = new JLabel(); EresulUpdateFinalCan.setBounds(20, 400,
+		 * 700, 30); EresulUpdateFinalCan.setFont(new
+		 * Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
+		 * EresulUpdateFinalCan.setForeground(Color.DARK_GRAY);//Color del texto
+		 * panelUpdateCan.add(EresulUpdateFinalCan);//Anadimos
+		 */		
+		/*
+		 * EresulVerUpdateCan = new JLabel(); EresulVerUpdateCan.setBounds(20, 240, 850,
+		 * 30); EresulVerUpdateCan.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		 * EresulVerUpdateCan.setForeground(Color.DARK_GRAY);// Color del texto
+		 * panelUpdateCan.add(EresulVerUpdateCan);// Anadimos
+		 */			
 		
-		
+		/*
+		 * etiComboUpdateCan = new JLabel("Selecciona el campo a actualizar");
+		 * etiComboUpdateCan.setBounds(400, 70, 370, 30); etiComboUpdateCan.setFont(new
+		 * Font("Segoe UI",Font.BOLD,18));//Damos formato al contenido
+		 * etiComboUpdateCan.setForeground(Color.DARK_GRAY);//Color del texto
+		 * panelUpdateCan.add(etiComboUpdateCan);//Anadimos
+		 * 
+		 * comboUpdateCandidato = new JComboBox<String>();
+		 * comboUpdateCandidato.addItem("NOMBRE");
+		 * comboUpdateCandidato.addItem("APELLIDOS");
+		 * comboUpdateCandidato.addItem("EMAIL");
+		 * comboUpdateCandidato.addItem("TELEFONO");
+		 * comboUpdateCandidato.addItem("FUENTE");
+		 * comboUpdateCandidato.addItem("PERFIL");
+		 * comboUpdateCandidato.addItem("OBSERVACIONES");
+		 * comboUpdateCandidato.setBounds(400, 110, 370, 30);
+		 * comboUpdateCandidato.setBorder(BorderFactory.createLineBorder(
+		 * colorVerdeAcens, 2)); comboUpdateCandidato.setForeground(colorGris);
+		 * panelUpdateCan.add(comboUpdateCandidato);
+		 * 
+		 * etiUpNewDataCandidato = new JLabel("Introduce nuevo dato");
+		 * etiUpNewDataCandidato.setBounds(20, 150, 700, 30);
+		 * etiUpNewDataCandidato.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos
+		 * formato al contenido
+		 * etiUpNewDataCandidato.setForeground(Color.DARK_GRAY);//Color del texto
+		 * panelUpdateCan.add(etiUpNewDataCandidato);//Anadimos
+		 * 
+		 * JTFUpdateNewdataCan = new JTextField();//Creamos el componente TextPrompt
+		 * placeholdernewdata = new TextPrompt("Nuevo valor", JTFUpdateNewdataCan);
+		 * placeholdernewdata.changeAlpha(0.75f);
+		 * placeholdernewdata.changeStyle(Font.ITALIC);
+		 * JTFUpdateNewdataCan.setBounds(20,190,370,30);//Posicionamos
+		 * JTFUpdateNewdataCan.setBorder(BorderFactory.createLineBorder(colorVerdeAcens,
+		 * 2)); JTFUpdateNewdataCan.setFont(new Font("Segoe UI",Font.BOLD,16));//Damos
+		 * formato al contenido JTFUpdateNewdataCan.setBackground(colorBlanco); //Color
+		 * de fondo JTFUpdateNewdataCan.setForeground(colorGris);//Color del texto
+		 * panelUpdateCan.add(JTFUpdateNewdataCan);//Anadimos
+		 */		  
+		/*	  EpreguntaUpdateCan = new JLabel("¿Deseas continuar?");
+			  EpreguntaUpdateCan.setBounds(20, 280, 700, 30);
+			  EpreguntaUpdateCan.setFont(new Font("Segoe UI",Font.BOLD,18));//Damos formato
+			  al contenido EpreguntaUpdateCan.setForeground(Color.DARK_GRAY);//Color del
+			  texto panelUpdateCan.add(EpreguntaUpdateCan);//Anadimos
+			  EpreguntaUpdateCan.setVisible(false);*/
 	}
 
 	private void panelConsultarCandidato() {
@@ -1211,31 +1322,12 @@ public class Ventana extends JFrame {
 	public JTextField getJTFidUpdateCan() {
 		return JTFidUpdateCan;
 	}
-
-	public JTextField getJTFUpdateNewdataCan() {
-		return JTFUpdateNewdataCan;
-	}
-
-	public JLabel getEresulVerUpdateCan() {
-		return EresulVerUpdateCan;
-	}
-
 	public JButton getBVerificarUpdateCan() {
 		return BVerificarUpdateCan;
 	}
-
 	public void setJTFidUpdateCan(JTextField jTFidUpdateCan) {
 		JTFidUpdateCan = jTFidUpdateCan;
 	}
-
-	public void setJTFUpdateNewdataCan(JTextField jTFUpdateNewdataCan) {
-		JTFUpdateNewdataCan = jTFUpdateNewdataCan;
-	}
-
-	public void setEresulVerUpdateCan(JLabel eresulVerUpdateCan) {
-		EresulVerUpdateCan = eresulVerUpdateCan;
-	}
-
 	public void setBVerificarUpdateCan(JButton bVerificarUpdateCan) {
 		BVerificarUpdateCan = bVerificarUpdateCan;
 	}
@@ -1263,19 +1355,9 @@ public class Ventana extends JFrame {
 	public void setBUpdateFinalCandidato(JButton bUpdateFinalCandidato) {
 		BUpdateFinalCandidato = bUpdateFinalCandidato;
 	}
-
-	public JLabel getEresulUpdateFinalCan() {
-		return EresulUpdateFinalCan;
-	}
-
-	public void setEresulUpdateFinalCan(JLabel eresulUpdateFinalCan) {
-		EresulUpdateFinalCan = eresulUpdateFinalCan;
-	}
-
 	public JPanel getPanelEliminarCan() {
 		return panelEliminarCan;
 	}
-
 	public JTextField getJTFidEliminarCan() {
 		return JTFidEliminarCan;
 	}
@@ -1478,5 +1560,61 @@ public class Ventana extends JFrame {
 
 	public void seteFechaEntradaPro(JLabel eFechaEntradaPro) {
 		this.eFechaEntradaPro = eFechaEntradaPro;
+	}
+
+	public JTextField getJTFNomCanUP() {
+		return JTFNomCanUP;
+	}
+
+	public JTextField getJTFApellCanUP() {
+		return JTFApellCanUP;
+	}
+
+	public JTextField getJTFEmailCanUP() {
+		return JTFEmailCanUP;
+	}
+
+	public JTextField getJTFTeleCanUP() {
+		return JTFTeleCanUP;
+	}
+
+	public JTextField getJTFPerfilCanUP() {
+		return JTFPerfilCanUP;
+	}
+
+	public JTextField getJTFFuenteCanUP() {
+		return JTFFuenteCanUP;
+	}
+
+	public JTextField getJTFObscanUP() {
+		return JTFObscanUP;
+	}
+
+	public void setJTFNomCanUP(JTextField jTFNomCanUP) {
+		JTFNomCanUP = jTFNomCanUP;
+	}
+
+	public void setJTFApellCanUP(JTextField jTFApellCanUP) {
+		JTFApellCanUP = jTFApellCanUP;
+	}
+
+	public void setJTFEmailCanUP(JTextField jTFEmailCanUP) {
+		JTFEmailCanUP = jTFEmailCanUP;
+	}
+
+	public void setJTFTeleCanUP(JTextField jTFTeleCanUP) {
+		JTFTeleCanUP = jTFTeleCanUP;
+	}
+
+	public void setJTFPerfilCanUP(JTextField jTFPerfilCanUP) {
+		JTFPerfilCanUP = jTFPerfilCanUP;
+	}
+
+	public void setJTFFuenteCanUP(JTextField jTFFuenteCanUP) {
+		JTFFuenteCanUP = jTFFuenteCanUP;
+	}
+
+	public void setJTFObscanUP(JTextField jTFObscanUP) {
+		JTFObscanUP = jTFObscanUP;
 	}
 }
